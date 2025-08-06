@@ -1,4 +1,5 @@
 import { Button } from '../../../shared/components';
+import { Flex } from '@chakra-ui/react';
 
 interface ErrorStateProps {
   error: string;
@@ -35,22 +36,24 @@ export const ErrorState = ({ error, onRetry, onReset }: ErrorStateProps) => {
           </div>
 
           <div className="space-y-2">
-            <Button
-              variant="primary"
-              size="md"
-              onClick={onRetry}
-              className="w-full"
-            >
-              Intentar de nuevo
-            </Button>
-            <Button
-              variant="outline"
-              size="md"
-              onClick={onReset}
-              className="w-full"
-            >
-              Seleccionar otra imagen
-            </Button>
+            <Flex direction="column" gap={2}>
+              <Button
+                variant="primary"
+                size="md"
+                onClick={onRetry}
+                className="w-full"
+              >
+                Intentar de nuevo
+              </Button>
+              <Button
+                variant="outline"
+                size="md"
+                onClick={onReset}
+                className="w-full"
+              >
+                Seleccionar otra imagen
+              </Button>
+            </Flex>
           </div>
         </div>
       </div>

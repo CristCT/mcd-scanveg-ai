@@ -48,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         colorScheme={colorSchemeMapping[variant]}
         size={sizeMapping[size]}
         loading={loading}
-        disabled={disabled}
+        disabled={disabled || loading}
         {...props}
       >
         {loading && <Spinner size="sm" mr={2} />}
