@@ -7,7 +7,6 @@ Frontend para la aplicación de detección de enfermedades en hojas de tomate us
 - **Arquitectura basada en features**: Código organizado por funcionalidades
 - **TypeScript**: Tipado estático
 - **React 19**: Versión de React
-- **Tailwind CSS**: Diseño responsivo
 - **ESLint + Prettier**: Linting y formateo automático de código
 
 ## 📁 Estructura del Proyecto
@@ -64,7 +63,6 @@ npm run build
 
 ### Interfaz Moderna
 
-- Diseño responsivo con Tailwind CSS
 - Navbar con navegación
 - Estados de carga animados
 - Mensajes de error informativos
