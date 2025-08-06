@@ -1,6 +1,7 @@
 import { useRef } from 'react';
+import { Box, Button, VStack, Text, Icon } from '@chakra-ui/react';
+import { FiUploadCloud, FiPlus } from 'react-icons/fi';
 import { useFileDrop } from '../../../shared/hooks';
-import { Button } from '../../../shared/components';
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -35,17 +36,29 @@ export const FileUpload = ({
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div
-        className={`
-          relative border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200
-          ${
-            isDragOver
-              ? 'border-primary-500 bg-primary-50'
-              : 'border-gray-300 hover:border-gray-400'
-          }
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-        `}
+    <Box w="full" maxW="2xl" mx="auto">
+      <Box
+        p={12}
+        border="2px"
+        borderStyle="dashed"
+        borderColor={isDragOver ? 'primary.400' : 'gray.300'}
+        borderRadius="2xl"
+        textAlign="center"
+        transition="all 0.3s"
+        bg={isDragOver ? 'primary.50' : 'white'}
+        _hover={
+          !disabled
+            ? {
+                borderColor: 'primary.300',
+                bg: 'primary.50',
+                shadow: 'lg',
+              }
+            : {}
+        }
+        transform={isDragOver ? 'scale(1.02)' : 'scale(1)'}
+        shadow={isDragOver ? 'xl' : 'md'}
+        opacity={disabled ? 0.5 : 1}
+        cursor={disabled ? 'not-allowed' : 'pointer'}
         onDragOver={!disabled ? handleDragOver : undefined}
         onDragLeave={!disabled ? handleDragLeave : undefined}
         onDrop={!disabled ? handleDrop : undefined}
@@ -56,60 +69,97 @@ export const FileUpload = ({
           type="file"
           accept={accept.join(',')}
           onChange={handleFileSelect}
-          className="hidden"
+          style={{ display: 'none' }}
           disabled={disabled}
         />
 
-        <div className="space-y-4">
-          <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg
-              className="w-8 h-8 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-              />
-            </svg>
-          </div>
+        <VStack gap={6}>
+          <Box
+            w="20"
+            h="20"
+            bgGradient="linear(to-br, primary.100, primary.200)"
+            rounded="2xl"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            shadow="lg"
+            transition="transform 0.3s"
+          >
+            <Icon
+              as={FiUploadCloud}
+              w="10"
+              h="10"
+              color={isDragOver ? 'primary.600' : 'primary.500'}
+              transition="color 0.3s"
+            />
+          </Box>
 
-          <div>
-            <p className="text-lg font-medium text-gray-900">
+          <VStack gap={2}>
+            <Text fontSize="xl" fontWeight="semibold" color="gray.900">
               {isDragOver
-                ? 'Suelta la imagen aquí'
+                ? '¡Suelta la imagen aquí!'
                 : 'Sube una imagen de hoja de tomate'}
-            </p>
-            <p className="text-sm text-gray-500 mt-1">
-              Arrastra y suelta o haz clic para seleccionar
-            </p>
-            <p className="text-xs text-gray-400 mt-2">
-              PNG, JPG hasta {(maxSize / 1024 / 1024).toFixed(0)}MB
-            </p>
-          </div>
+            </Text>
+            <Text color="gray.500" mb={1}>
+              Arrastra y suelta tu imagen o haz clic para seleccionar
+            </Text>
+            <Text fontSize="sm" color="gray.400">
+              Formatos: PNG, JPG • Tamaño máximo:{' '}
+              {(maxSize / 1024 / 1024).toFixed(0)}MB
+            </Text>
+          </VStack>
 
           <Button
-            variant="outline"
-            size="sm"
+            colorScheme="blue"
+            size="lg"
             disabled={disabled}
+            minW="200px"
+            shadow="md"
+            _hover={{ shadow: 'lg' }}
+            transition="all 0.3s"
             onClick={e => {
               e.stopPropagation();
               handleButtonClick();
             }}
           >
-            Seleccionar archivo
+            <Icon as={FiPlus} />
+            <Text ml={2}>Seleccionar archivo</Text>
           </Button>
-        </div>
-      </div>
+        </VStack>
+      </Box>
 
       {error && (
-        <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
+        <Box
+          mt={4}
+          p={4}
+          bg="red.50"
+          border="1px"
+          borderColor="red.200"
+          borderRadius="xl"
+          display="flex"
+          alignItems="center"
+        >
+          <Icon
+            w="5"
+            h="5"
+            color="red.500"
+            mr={2}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </Icon>
+          <Text fontSize="sm" color="red.700" fontWeight="medium">
+            {error}
+          </Text>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };

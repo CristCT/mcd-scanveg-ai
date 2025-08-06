@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { Navbar } from './Navbar';
 
 interface LayoutProps {
@@ -6,9 +7,11 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Box minH="100vh" bg="gray.50">
       <Navbar />
-      <main className="flex-1">{children}</main>
-    </div>
+      <Box as="main" flex="1">
+        {children}
+      </Box>
+    </Box>
   );
 };

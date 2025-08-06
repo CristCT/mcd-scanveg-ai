@@ -78,11 +78,11 @@ export const HomePage = () => {
           </Box>
         </Box>
 
-        <Grid templateColumns="repeat(3, 1fr)" gap={{ base: 4, md: 8 }}>
+        <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={8}>
           <GridItem>
             <Box
               textAlign="center"
-              p={{ base: 4, md: 8 }}
+              p={8}
               bg="white"
               backdropFilter="blur(4px)"
               rounded="2xl"
@@ -99,25 +99,20 @@ export const HomePage = () => {
             >
               <Box
                 mx="auto"
-                w={{ base: '12', md: '16' }}
-                h={{ base: '12', md: '16' }}
+                w="16"
+                h="16"
                 bgGradient="linear(to-br, primary.100, primary.200)"
                 rounded="2xl"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                mb={{ base: 4, md: 6 }}
+                mb={6}
                 transition="transform 0.3s"
                 _groupHover={{ transform: 'scale(1.1)' }}
               >
-                <Icon
-                  as={FiZap}
-                  w={{ base: '6', md: '8' }}
-                  h={{ base: '6', md: '8' }}
-                  color="primary.600"
-                />
+                <Icon as={FiZap} w="8" h="8" color="primary.600" />
               </Box>
-              <Heading size={{ base: 'md', md: 'lg' }} color="gray.900" mb={3}>
+              <Heading size="lg" color="gray.900" mb={3}>
                 Análisis Rápido
               </Heading>
               <Text color="gray.600" lineHeight="relaxed">
@@ -130,7 +125,7 @@ export const HomePage = () => {
           <GridItem>
             <Box
               textAlign="center"
-              p={{ base: 4, md: 8 }}
+              p={8}
               bg="white"
               backdropFilter="blur(4px)"
               rounded="2xl"
@@ -147,25 +142,20 @@ export const HomePage = () => {
             >
               <Box
                 mx="auto"
-                w={{ base: '12', md: '16' }}
-                h={{ base: '12', md: '16' }}
+                w="16"
+                h="16"
                 bgGradient="linear(to-br, blue.100, blue.200)"
                 rounded="2xl"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                mb={{ base: 4, md: 6 }}
+                mb={6}
                 transition="transform 0.3s"
                 _groupHover={{ transform: 'scale(1.1)' }}
               >
-                <Icon
-                  as={FiCheck}
-                  w={{ base: '6', md: '8' }}
-                  h={{ base: '6', md: '8' }}
-                  color="blue.600"
-                />
+                <Icon as={FiCheck} w="8" h="8" color="blue.600" />
               </Box>
-              <Heading size={{ base: 'md', md: 'lg' }} color="gray.900" mb={3}>
+              <Heading size="lg" color="gray.900" mb={3}>
                 Alta Precisión
               </Heading>
               <Text color="gray.600" lineHeight="relaxed">
@@ -178,7 +168,7 @@ export const HomePage = () => {
           <GridItem>
             <Box
               textAlign="center"
-              p={{ base: 4, md: 8 }}
+              p={8}
               bg="white"
               backdropFilter="blur(4px)"
               rounded="2xl"
@@ -195,25 +185,20 @@ export const HomePage = () => {
             >
               <Box
                 mx="auto"
-                w={{ base: '12', md: '16' }}
-                h={{ base: '12', md: '16' }}
+                w="16"
+                h="16"
                 bgGradient="linear(to-br, green.100, green.200)"
                 rounded="2xl"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                mb={{ base: 4, md: 6 }}
+                mb={6}
                 transition="transform 0.3s"
                 _groupHover={{ transform: 'scale(1.1)' }}
               >
-                <Icon
-                  as={FiSmartphone}
-                  w={{ base: '6', md: '8' }}
-                  h={{ base: '6', md: '8' }}
-                  color="green.600"
-                />
+                <Icon as={FiSmartphone} w="8" h="8" color="green.600" />
               </Box>
-              <Heading size={{ base: 'md', md: 'lg' }} color="gray.900" mb={3}>
+              <Heading size="lg" color="gray.900" mb={3}>
                 Fácil de Usar
               </Heading>
               <Text color="gray.600" lineHeight="relaxed">

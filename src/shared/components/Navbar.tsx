@@ -1,4 +1,6 @@
+import { Box, Flex, Text, Icon, Container } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
+import { FaHeart } from 'react-icons/fa';
 
 interface NavItem {
   label: string;
@@ -11,73 +13,83 @@ export const Navbar = () => {
   const location = useLocation();
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+    <Box
+      bg="white"
+      backdropFilter="blur(10px)"
+      borderBottom="1px"
+      borderColor="gray.200"
+      shadow="lg"
+      position="sticky"
+      top="0"
+      zIndex="50"
+    >
+      <Container maxW="7xl" px={{ base: 4, md: 6 }}>
+        <Flex justify="space-between" align="center" h="16">
+          <Flex align="center">
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Flex align="center" gap={3}>
+                <Box
+                  w="10"
+                  h="10"
+                  bg="linear-gradient(135deg, #22c55e, #15803d)"
+                  rounded="xl"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  shadow="lg"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </div>
-              <span className="text-xl font-bold text-gray-900">
-                MCD ScanVeg AI
-              </span>
+                  <Icon as={FaHeart} w="6" h="6" color="white" />
+                </Box>
+                <Text
+                  fontSize="xl"
+                  fontWeight="bold"
+                  bgGradient="linear(to-r, gray.900, primary.700)"
+                  bgClip="text"
+                >
+                  MCD ScanVeg AI
+                </Text>
+              </Flex>
             </Link>
-          </div>
+          </Flex>
 
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+          <Box display={{ base: 'none', md: 'block' }}>
+            <Flex align="baseline" gap={4}>
               {navItems.map(item => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                    location.pathname === item.path
-                      ? 'bg-primary-100 text-primary-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                  }`}
+                  style={{ textDecoration: 'none' }}
                 >
-                  {item.label}
+                  <Box
+                    px={3}
+                    py={2}
+                    rounded="md"
+                    fontSize="sm"
+                    fontWeight="medium"
+                    transition="all 0.2s"
+                    bg={
+                      location.pathname === item.path
+                        ? 'primary.100'
+                        : 'transparent'
+                    }
+                    color={
+                      location.pathname === item.path
+                        ? 'primary.700'
+                        : 'gray.600'
+                    }
+                    _hover={{
+                      color: 'gray.900',
+                      bg: 'gray.100',
+                    }}
+                  >
+                    {item.label}
+                  </Box>
                 </Link>
               ))}
-            </div>
-          </div>
-
-          <div className="md:hidden">
-            <button
-              type="button"
-              className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
-            >
-              <span className="sr-only">Abrir menú principal</span>
-              <svg
-                className="h-6 w-6"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+            </Flex>
+          </Box>
+        </Flex>
+      </Container>
+    </Box>
   );
 };
