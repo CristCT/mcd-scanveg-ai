@@ -52,7 +52,7 @@ class HttpService {
         data: response.data,
       };
     } catch (error: unknown) {
-      return this.handleError(error);
+      return this.handleError<T>(error);
     }
   }
 
@@ -94,7 +94,7 @@ class HttpService {
     }
   }
 
-  private handleError(error: unknown): ApiResponse {
+  private handleError<T>(error: unknown): ApiResponse<T> {
     const errorObj = error as {
       response?: { data?: { message?: string } };
       message?: string;
