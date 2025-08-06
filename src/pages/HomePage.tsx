@@ -24,10 +24,10 @@ export const HomePage = () => {
 
             <Box
               position="absolute"
-              top="-2"
-              left="-4"
-              w="12"
-              h="12"
+              top="-7"
+              right="0"
+              w="4"
+              h="4"
               bg="primary.200"
               rounded="full"
               opacity="0.5"
@@ -41,7 +41,7 @@ export const HomePage = () => {
               h="4"
               bg="blue.200"
               rounded="full"
-              opacity="0.6"
+              opacity="0.9"
               animation="pulse 2s infinite"
               animationDelay="1s"
             />
