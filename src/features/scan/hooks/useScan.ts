@@ -32,7 +32,7 @@ export const useScan = () => {
           error: response.error || 'Error desconocido al procesar la imagen',
         }));
       }
-    } catch (_error) {
+    } catch {
       setState(prev => ({
         ...prev,
         isLoading: false,
