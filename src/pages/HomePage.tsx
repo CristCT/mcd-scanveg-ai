@@ -18,17 +18,8 @@ export const HomePage = () => {
       <Container maxW="7xl" px={{ base: 4, md: 6 }} py={12}>
         <VStack gap={16} align="center" textAlign="center" mb={20}>
           <Box position="relative">
-            <Heading
-              fontSize={{ base: '4xl', md: '6xl' }}
-              fontWeight="bold"
-              mb={6}
-            >
-              <Text
-                bgGradient="linear(to-r, primary.600, primary.500, blue.500)"
-                bgClip="text"
-              >
-                MCD ScanVeg AI
-              </Text>
+            <Heading fontSize={{ base: '4xl', md: '6xl' }}>
+              <Text>MCD ScanVeg AI</Text>
             </Heading>
 
             <Box
@@ -44,10 +35,10 @@ export const HomePage = () => {
             />
             <Box
               position="absolute"
-              top="-6"
-              right="-8"
-              w="8"
-              h="8"
+              top="-7"
+              right="0"
+              w="4"
+              h="4"
               bg="blue.200"
               rounded="full"
               opacity="0.6"
