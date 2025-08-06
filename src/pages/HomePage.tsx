@@ -76,7 +76,6 @@ export const HomePage = () => {
         <Stack direction="row" wrap="wrap" justify="center">
           <Card.Root
             width="320px"
-            bg="white"
             transition="all 0.3s"
             _hover={{
               transform: 'translateY(-4px)',
@@ -97,7 +96,6 @@ export const HomePage = () => {
 
           <Card.Root
             width="320px"
-            bg="white"
             transition="all 0.3s"
             _hover={{
               transform: 'translateY(-4px)',
@@ -118,7 +116,6 @@ export const HomePage = () => {
 
           <Card.Root
             width="320px"
-            bg="white"
             transition="all 0.3s"
             _hover={{
               transform: 'translateY(-4px)',
