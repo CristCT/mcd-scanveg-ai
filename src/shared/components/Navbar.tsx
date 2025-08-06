@@ -1,6 +1,6 @@
 import { Box, Flex, Text, Icon, Container } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHeart } from 'react-icons/fa';
+import { FaLeaf } from 'react-icons/fa';
 
 interface NavItem {
   label: string;
@@ -14,7 +14,7 @@ export const Navbar = () => {
 
   return (
     <Box
-      bg="white"
+      bg="black"
       backdropFilter="blur(10px)"
       borderBottom="1px"
       borderColor="gray.200"
@@ -31,14 +31,16 @@ export const Navbar = () => {
                 <Box
                   w="10"
                   h="10"
-                  bg="linear-gradient(135deg, #22c55e, #15803d)"
+                  bgGradient="linear(135deg, primary.500, primary.700)"
                   rounded="xl"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
                   shadow="lg"
+                  transition="transform 0.2s"
+                  _hover={{ transform: 'scale(1.05)' }}
                 >
-                  <Icon as={FaHeart} w="6" h="6" color="white" />
+                  <Icon as={FaLeaf} w="6" h="6" color="white" />
                 </Box>
                 <Text
                   fontSize="xl"
@@ -52,8 +54,8 @@ export const Navbar = () => {
             </Link>
           </Flex>
 
-          <Box display={{ base: 'none', md: 'block' }}>
-            <Flex align="baseline" gap={4}>
+          <Box display={{ base: 'none', md: 'flex' }}>
+            <Flex align="center" gap={4}>
               {navItems.map(item => (
                 <Link
                   key={item.path}
@@ -78,8 +80,8 @@ export const Navbar = () => {
                         : 'gray.600'
                     }
                     _hover={{
-                      color: 'gray.900',
-                      bg: 'gray.100',
+                      color: 'primary.600',
+                      bg: 'primary.50',
                     }}
                   >
                     {item.label}
