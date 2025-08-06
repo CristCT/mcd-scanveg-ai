@@ -43,6 +43,7 @@ export const Navbar = () => {
                   <Icon as={FaLeaf} w="6" h="6" color="white" />
                 </Box>
                 <Text
+                  bgColor="white"
                   fontSize="xl"
                   fontWeight="bold"
                   bgGradient="linear(to-r, gray.900, primary.700)"
