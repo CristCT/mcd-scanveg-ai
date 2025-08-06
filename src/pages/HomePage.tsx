@@ -15,7 +15,7 @@ import { ScanContainer } from '../features/scan';
 export const HomePage = () => {
   return (
     <Layout>
-      <Container py={12}>
+      <Container maxW="100%" py={12}>
         <VStack gap={16} align="center" textAlign="center" mb={10}>
           <Box position="relative">
             <Heading fontSize={{ base: '4xl', md: '6xl' }}>
