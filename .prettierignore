@@ -1,0 +1,22 @@
+# Ignorar archivos de build y dependencias
+node_modules/
+dist/
+build/
+
+# Ignorar archivos de configuración
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignorar archivos generados
+*.log
+coverage/
+
+# Ignorar configuraciones específicas
+public/
+*.config.js
+*.config.ts
+tailwind.config.js
+vite.config.ts
