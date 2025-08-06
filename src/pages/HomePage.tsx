@@ -5,8 +5,8 @@ import {
   Heading,
   Text,
   Icon,
-  Grid,
-  GridItem,
+  Stack,
+  Card,
 } from '@chakra-ui/react';
 import { FiZap, FiCheck, FiSmartphone } from 'react-icons/fi';
 import { Layout } from '../shared/components';
@@ -56,12 +56,7 @@ export const HomePage = () => {
             />
           </Box>
 
-          <Text
-            fontSize={{ base: 'xl', md: '2xl' }}
-            color="gray.600"
-            maxW="3xl"
-            lineHeight="relaxed"
-          >
+          <Text color="gray.600">
             Detecta enfermedades en hojas de tomate usando{' '}
             <Text as="span" fontWeight="semibold" color="primary.600">
               inteligencia artificial
@@ -78,151 +73,70 @@ export const HomePage = () => {
           </Box>
         </Box>
 
-        <Grid templateColumns="repeat(3, 1fr)" gap={{ base: 4, md: 8 }}>
-          <GridItem>
-            <Box
-              textAlign="center"
-              p={{ base: 4, md: 8 }}
-              bg="white"
-              backdropFilter="blur(4px)"
-              rounded="2xl"
-              shadow="lg"
-              border="1px"
-              borderColor="gray.200"
-              transition="all 0.3s"
-              _hover={{
-                shadow: 'xl',
-                transform: 'translateY(-4px)',
-                bg: 'gray.50',
-              }}
-              role="group"
-            >
-              <Box
-                mx="auto"
-                w={{ base: '12', md: '16' }}
-                h={{ base: '12', md: '16' }}
-                bgGradient="linear(to-br, primary.100, primary.200)"
-                rounded="2xl"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                mb={{ base: 4, md: 6 }}
-                transition="transform 0.3s"
-                _groupHover={{ transform: 'scale(1.1)' }}
-              >
-                <Icon
-                  as={FiZap}
-                  w={{ base: '6', md: '8' }}
-                  h={{ base: '6', md: '8' }}
-                  color="primary.600"
-                />
+        <Stack direction="row" wrap="wrap" justify="center">
+          <Card.Root
+            width="320px"
+            bg="white"
+            transition="all 0.3s"
+            _hover={{
+              transform: 'translateY(-4px)',
+              shadow: 'xl',
+            }}
+          >
+            <Card.Body gap="2" textAlign="center">
+              <Box mx="auto" display="flex" justifyContent="center">
+                <Icon as={FiZap} color="primary.600" />
               </Box>
-              <Heading size={{ base: 'md', md: 'lg' }} color="gray.900" mb={3}>
-                Análisis Rápido
-              </Heading>
-              <Text color="gray.600" lineHeight="relaxed">
+              <Card.Title color="gray.900">Análisis Rápido</Card.Title>
+              <Card.Description color="gray.600" lineHeight="relaxed">
                 Obtén resultados en segundos con nuestra IA entrenada
                 específicamente para hojas de tomate.
-              </Text>
-            </Box>
-          </GridItem>
+              </Card.Description>
+            </Card.Body>
+          </Card.Root>
 
-          <GridItem>
-            <Box
-              textAlign="center"
-              p={{ base: 4, md: 8 }}
-              bg="white"
-              backdropFilter="blur(4px)"
-              rounded="2xl"
-              shadow="lg"
-              border="1px"
-              borderColor="gray.200"
-              transition="all 0.3s"
-              _hover={{
-                shadow: 'xl',
-                transform: 'translateY(-4px)',
-                bg: 'gray.50',
-              }}
-              role="group"
-            >
-              <Box
-                mx="auto"
-                w={{ base: '12', md: '16' }}
-                h={{ base: '12', md: '16' }}
-                bgGradient="linear(to-br, blue.100, blue.200)"
-                rounded="2xl"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                mb={{ base: 4, md: 6 }}
-                transition="transform 0.3s"
-                _groupHover={{ transform: 'scale(1.1)' }}
-              >
-                <Icon
-                  as={FiCheck}
-                  w={{ base: '6', md: '8' }}
-                  h={{ base: '6', md: '8' }}
-                  color="blue.600"
-                />
+          <Card.Root
+            width="320px"
+            bg="white"
+            transition="all 0.3s"
+            _hover={{
+              transform: 'translateY(-4px)',
+              shadow: 'xl',
+            }}
+          >
+            <Card.Body gap="2" textAlign="center">
+              <Box mx="auto" display="flex" justifyContent="center">
+                <Icon as={FiCheck} color="blue.600" />
               </Box>
-              <Heading size={{ base: 'md', md: 'lg' }} color="gray.900" mb={3}>
-                Alta Precisión
-              </Heading>
-              <Text color="gray.600" lineHeight="relaxed">
+              <Card.Title color="gray.900">Alta Precisión</Card.Title>
+              <Card.Description color="gray.600" lineHeight="relaxed">
                 Modelo entrenado con miles de imágenes para garantizar la máxima
                 precisión en el diagnóstico.
-              </Text>
-            </Box>
-          </GridItem>
+              </Card.Description>
+            </Card.Body>
+          </Card.Root>
 
-          <GridItem>
-            <Box
-              textAlign="center"
-              p={{ base: 4, md: 8 }}
-              bg="white"
-              backdropFilter="blur(4px)"
-              rounded="2xl"
-              shadow="lg"
-              border="1px"
-              borderColor="gray.200"
-              transition="all 0.3s"
-              _hover={{
-                shadow: 'xl',
-                transform: 'translateY(-4px)',
-                bg: 'gray.50',
-              }}
-              role="group"
-            >
-              <Box
-                mx="auto"
-                w={{ base: '12', md: '16' }}
-                h={{ base: '12', md: '16' }}
-                bgGradient="linear(to-br, green.100, green.200)"
-                rounded="2xl"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                mb={{ base: 4, md: 6 }}
-                transition="transform 0.3s"
-                _groupHover={{ transform: 'scale(1.1)' }}
-              >
-                <Icon
-                  as={FiSmartphone}
-                  w={{ base: '6', md: '8' }}
-                  h={{ base: '6', md: '8' }}
-                  color="green.600"
-                />
+          <Card.Root
+            width="320px"
+            bg="white"
+            transition="all 0.3s"
+            _hover={{
+              transform: 'translateY(-4px)',
+              shadow: 'xl',
+            }}
+          >
+            <Card.Body gap="2" textAlign="center">
+              <Box mx="auto" display="flex" justifyContent="center">
+                <Icon as={FiSmartphone} color="green.600" />
               </Box>
-              <Heading size={{ base: 'md', md: 'lg' }} color="gray.900" mb={3}>
-                Fácil de Usar
-              </Heading>
-              <Text color="gray.600" lineHeight="relaxed">
+              <Card.Title color="gray.900">Fácil de Usar</Card.Title>
+              <Card.Description color="gray.600" lineHeight="relaxed">
                 Interfaz intuitiva que permite a cualquier persona analizar sus
                 plantas sin conocimientos técnicos.
-              </Text>
-            </Box>
-          </GridItem>
-        </Grid>
+              </Card.Description>
+            </Card.Body>
+          </Card.Root>
+        </Stack>
       </Container>
     </Layout>
   );
