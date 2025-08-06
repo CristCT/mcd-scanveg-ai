@@ -16,7 +16,7 @@ export const HomePage = () => {
   return (
     <Layout>
       <Container maxW="7xl" px={{ base: 4, md: 6 }} py={12}>
-        <VStack gap={16} align="center" textAlign="center" mb={20}>
+        <VStack gap={16} align="center" textAlign="center" mb={10}>
           <Box position="relative">
             <Heading fontSize={{ base: '4xl', md: '6xl' }}>
               <Text>MCD ScanVeg AI</Text>
@@ -58,7 +58,7 @@ export const HomePage = () => {
           </Text>
         </VStack>
 
-        <Box display="flex" justifyContent="center" mb={20}>
+        <Box display="flex" justifyContent="center" mb={10}>
           <Box w="full" maxW="2xl">
             <ScanContainer />
           </Box>
