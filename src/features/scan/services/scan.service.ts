@@ -7,7 +7,7 @@ class ScanService {
     const formData = new FormData();
     formData.append('image', request.image);
 
-    return httpService.postFormData<ScanResultData>('api/scan', formData);
+    return httpService.postFormData<ScanResultData>('/api/scan', formData);
   }
 }
 
