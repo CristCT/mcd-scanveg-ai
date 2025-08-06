@@ -87,7 +87,7 @@ export const HomePage = () => {
               <Box mx="auto" display="flex" justifyContent="center">
                 <Icon as={FiZap} color="primary.600" />
               </Box>
-              <Card.Title color="gray.900">Análisis Rápido</Card.Title>
+              <Card.Title mb={14}>Análisis Rápido</Card.Title>
               <Card.Description color="gray.600" lineHeight="relaxed">
                 Obtén resultados en segundos con nuestra IA entrenada
                 específicamente para hojas de tomate.
@@ -108,7 +108,7 @@ export const HomePage = () => {
               <Box mx="auto" display="flex" justifyContent="center">
                 <Icon as={FiCheck} color="blue.600" />
               </Box>
-              <Card.Title color="gray.900">Alta Precisión</Card.Title>
+              <Card.Title mb={14}>Alta Precisión</Card.Title>
               <Card.Description color="gray.600" lineHeight="relaxed">
                 Modelo entrenado con miles de imágenes para garantizar la máxima
                 precisión en el diagnóstico.
@@ -129,7 +129,7 @@ export const HomePage = () => {
               <Box mx="auto" display="flex" justifyContent="center">
                 <Icon as={FiSmartphone} color="green.600" />
               </Box>
-              <Card.Title color="gray.900">Fácil de Usar</Card.Title>
+              <Card.Title mb={14}>Fácil de Usar</Card.Title>
               <Card.Description color="gray.600" lineHeight="relaxed">
                 Interfaz intuitiva que permite a cualquier persona analizar sus
                 plantas sin conocimientos técnicos.
