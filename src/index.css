@@ -17,7 +17,7 @@ body {
     Roboto,
     sans-serif;
   line-height: 1.6;
-  background: linear-gradient(135deg, #f7fafc 0%, #ffffff 50%, #f0fff4 100%);
+  background: linear-gradient(to bottom, #f0f4f8, #e0e7ef);
   min-height: 100vh;
 }
 
