@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Box, Button, VStack, Text, Icon } from '@chakra-ui/react';
+import { Box, Flex, VStack, Text, Icon } from '@chakra-ui/react';
 import { FiUploadCloud, FiPlus } from 'react-icons/fi';
 import { useFileDrop } from '../../../shared/hooks';
 
@@ -109,22 +109,10 @@ export const FileUpload = ({
             </Text>
           </VStack>
 
-          <Button
-            colorScheme="blue"
-            size="lg"
-            disabled={disabled}
-            minW="200px"
-            shadow="md"
-            _hover={{ shadow: 'lg' }}
-            transition="all 0.3s"
-            onClick={e => {
-              e.stopPropagation();
-              handleButtonClick();
-            }}
-          >
+          <Flex direction="column" align="center" justify="center" gap={2}>
             <Icon as={FiPlus} />
-            <Text ml={2}>Seleccionar archivo</Text>
-          </Button>
+            <Text>Seleccionar archivo</Text>
+          </Flex>
         </VStack>
       </Box>
 
