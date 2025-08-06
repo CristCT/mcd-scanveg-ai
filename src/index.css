@@ -17,7 +17,6 @@ body {
     Roboto,
     sans-serif;
   line-height: 1.6;
-  color: #2d3748;
   background: linear-gradient(135deg, #f7fafc 0%, #ffffff 50%, #f0fff4 100%);
   min-height: 100vh;
 }
