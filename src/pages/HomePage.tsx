@@ -83,7 +83,7 @@ export const HomePage = () => {
               shadow: 'xl',
             }}
           >
-            <Card.Body gap="2" textAlign="center">
+            <Card.Body gap="2" textAlign="center" padding={16}>
               <Box mx="auto" display="flex" justifyContent="center">
                 <Icon as={FiZap} color="primary.600" />
               </Box>
@@ -104,7 +104,7 @@ export const HomePage = () => {
               shadow: 'xl',
             }}
           >
-            <Card.Body gap="2" textAlign="center">
+            <Card.Body gap="2" textAlign="center" padding={16}>
               <Box mx="auto" display="flex" justifyContent="center">
                 <Icon as={FiCheck} color="blue.600" />
               </Box>
@@ -125,7 +125,7 @@ export const HomePage = () => {
               shadow: 'xl',
             }}
           >
-            <Card.Body gap="2" textAlign="center">
+            <Card.Body gap="2" textAlign="center" padding={16}>
               <Box mx="auto" display="flex" justifyContent="center">
                 <Icon as={FiSmartphone} color="green.600" />
               </Box>
