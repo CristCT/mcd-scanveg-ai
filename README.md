@@ -8,6 +8,7 @@ Frontend para la aplicación de detección de enfermedades en hojas de tomate us
 - **TypeScript**: Tipado estático
 - **React 19**: Versión de React
 - **Tailwind CSS**: Diseño responsivo
+- **ESLint + Prettier**: Linting y formateo automático de código
 
 ## 📁 Estructura del Proyecto
 
@@ -104,4 +105,8 @@ El frontend está configurado para conectarse al backend en `http://localhost:50
 - `npm run dev` - Servidor de desarrollo
 - `npm run build` - Build de producción
 - `npm run lint` - Linter de código
+- `npm run lint:fix` - Corregir errores de linting automáticamente
+- `npm run format` - Formatear código con Prettier
+- `npm run format:check` - Verificar formato del código
+- `npm run type-check` - Verificar tipos de TypeScript
 - `npm run preview` - Preview del build
