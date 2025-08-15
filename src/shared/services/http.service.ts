@@ -6,9 +6,7 @@ class HttpService {
   private api: AxiosInstance;
 
   constructor() {
-    const baseURL = import.meta.env.DEV
-      ? import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000'
-      : '/api';
+    const baseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
 
     this.api = axios.create({
       baseURL,
