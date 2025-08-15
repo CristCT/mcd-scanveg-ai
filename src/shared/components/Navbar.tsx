@@ -23,8 +23,9 @@ export const Navbar = () => {
       position="sticky"
       top="0"
       zIndex="50"
+      w="full"
     >
-      <Container maxW="7xl" px={{ base: 4, md: 6 }}>
+      <Container maxW="full" px={{ base: 4, md: 6 }} w="full">
         <Flex justify="space-between" align="center" h="16">
           <Flex align="center">
             <Link to="/" style={{ textDecoration: 'none' }}>
@@ -49,6 +50,7 @@ export const Navbar = () => {
                   fontWeight="bold"
                   bgGradient="linear(to-r, gray.900, primary.700)"
                   bgClip="text"
+                  whiteSpace="nowrap"
                 >
                   MCD ScanVeg AI
                 </Text>
@@ -56,6 +58,7 @@ export const Navbar = () => {
             </Link>
           </Flex>
 
+          {/* Navegación y Server Status - lado derecho */}
           <Flex align="center" gap={4}>
             <Box display={{ base: 'none', md: 'flex' }}>
               <Flex align="center" gap={4}>
@@ -94,7 +97,6 @@ export const Navbar = () => {
               </Flex>
             </Box>
 
-            {/* Server Status */}
             <ServerStatus size="sm" />
           </Flex>
         </Flex>
