@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Icon, Container } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaLeaf } from 'react-icons/fa';
+import { ServerStatus } from './ServerStatus';
 
 interface NavItem {
   label: string;
@@ -55,42 +56,47 @@ export const Navbar = () => {
             </Link>
           </Flex>
 
-          <Box display={{ base: 'none', md: 'flex' }}>
-            <Flex align="center" gap={4}>
-              {navItems.map(item => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Box
-                    px={3}
-                    py={2}
-                    rounded="md"
-                    fontSize="sm"
-                    fontWeight="medium"
-                    transition="all 0.2s"
-                    bg={
-                      location.pathname === item.path
-                        ? 'primary.100'
-                        : 'transparent'
-                    }
-                    color={
-                      location.pathname === item.path
-                        ? 'primary.700'
-                        : 'gray.600'
-                    }
-                    _hover={{
-                      color: 'primary.600',
-                      bg: 'primary.50',
-                    }}
+          <Flex align="center" gap={4}>
+            <Box display={{ base: 'none', md: 'flex' }}>
+              <Flex align="center" gap={4}>
+                {navItems.map(item => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    style={{ textDecoration: 'none' }}
                   >
-                    {item.label}
-                  </Box>
-                </Link>
-              ))}
-            </Flex>
-          </Box>
+                    <Box
+                      px={3}
+                      py={2}
+                      rounded="md"
+                      fontSize="sm"
+                      fontWeight="medium"
+                      transition="all 0.2s"
+                      bg={
+                        location.pathname === item.path
+                          ? 'primary.100'
+                          : 'transparent'
+                      }
+                      color={
+                        location.pathname === item.path
+                          ? 'primary.700'
+                          : 'gray.600'
+                      }
+                      _hover={{
+                        color: 'primary.600',
+                        bg: 'primary.50',
+                      }}
+                    >
+                      {item.label}
+                    </Box>
+                  </Link>
+                ))}
+              </Flex>
+            </Box>
+
+            {/* Server Status */}
+            <ServerStatus size="sm" />
+          </Flex>
         </Flex>
       </Container>
     </Box>
