@@ -79,17 +79,17 @@ export const Navbar = () => {
                       transition="all 0.2s"
                       bg={
                         location.pathname === item.path
-                          ? 'primary.100'
+                          ? 'primary.800'
                           : 'transparent'
                       }
                       color={
                         location.pathname === item.path
-                          ? 'primary.700'
-                          : 'gray.600'
+                          ? 'primary.400'
+                          : 'white'
                       }
                       _hover={{
-                        color: 'primary.600',
-                        bg: 'primary.50',
+                        color: 'primary.300',
+                        bg: 'primary.900',
                       }}
                     >
                       {item.label}
