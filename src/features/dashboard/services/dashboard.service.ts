@@ -1,0 +1,235 @@
+import { httpService } from '../../../shared/services/http.service';
+import type { ApiResponse } from '../../../shared/types';
+import type {
+  Statistics,
+  RecentAnalysesResponse,
+  DailyStatsResponse,
+  AnalysisResult,
+} from '../../../shared/types';
+
+interface BackendAnalysisItem {
+  id: number;
+  filename?: string;
+  prediction?: string;
+  confidence: number;
+  status: 'healthy' | 'diseased';
+  processing_time?: number;
+  model_version?: string;
+  created_at: string;
+  updated_at: string;
+  all_predictions?: Record<string, number>;
+  error_message?: string;
+  success?: boolean;
+  image_info?: {
+    mode?: string;
+    size?: string;
+    format?: string;
+    filename?: string;
+  };
+}
+
+class DashboardService {
+  /**
+   * Gets the general dashboard statistics
+   */
+  async getStatistics(): Promise<ApiResponse<Statistics>> {
+    try {
+      const response = await httpService.get<{
+        success: boolean;
+        data: Statistics;
+        message: string;
+      }>('/api/statistics');
+
+      if (response.success && response.data) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      } else {
+        return {
+          success: false,
+          error: response.data?.message || 'Error al obtener estadísticas',
+        };
+      }
+    } catch {
+      return {
+        success: false,
+        error: 'Error de conexión al obtener estadísticas',
+      };
+    }
+  }
+
+  /**
+   * Gets the most recent analyses
+   */
+  async getRecentAnalyses(
+    limit: number = 10
+  ): Promise<ApiResponse<AnalysisResult[]>> {
+    try {
+      const response = await httpService.get<{
+        success: boolean;
+        data: RecentAnalysesResponse;
+        message: string;
+      }>(`/api/analyses/recent?limit=${limit}`);
+
+      if (response.success && response.data) {
+        const transformedAnalyses = response.data.data.analyses.map(
+          (item: BackendAnalysisItem): AnalysisResult => ({
+            id: item.id,
+            image_filename: item.filename || item.image_info?.filename,
+            image_size: item.image_info?.size,
+            image_format: item.image_info?.format,
+            disease: item.prediction || 'Unknown',
+            confidence: item.confidence,
+            status: item.status,
+            processing_time: item.processing_time,
+            model_version: item.model_version,
+            date: item.created_at,
+            created_at: item.created_at,
+            updated_at: item.updated_at,
+            raw_predictions: item.all_predictions
+              ? JSON.stringify(item.all_predictions)
+              : undefined,
+            error_message: item.error_message,
+            success: item.success ?? true,
+          })
+        );
+
+        return {
+          success: true,
+          data: transformedAnalyses,
+        };
+      } else {
+        return {
+          success: false,
+          error:
+            response.data?.message || 'Error al obtener análisis recientes',
+        };
+      }
+    } catch {
+      return {
+        success: false,
+        error: 'Error de conexión al obtener análisis recientes',
+      };
+    }
+  }
+
+  /**
+   * Gets the daily statistics
+   */
+  async getDailyStats(
+    days: number = 7
+  ): Promise<ApiResponse<DailyStatsResponse>> {
+    try {
+      const response = await httpService.get<{
+        success: boolean;
+        data: {
+          dailyAnalysis: Array<{
+            date: string;
+            total: number;
+            healthy: number;
+            diseased: number;
+          }>;
+          period_days: number;
+        };
+        message: string;
+      }>(`/api/analyses/daily-stats?days=${days}`);
+
+      if (response.success && response.data) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const allDaysMap = new Map<
+          number,
+          { day: number; count: number; date: string }
+        >();
+
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date(today);
+          date.setDate(today.getDate() - i);
+          const dayOfWeek = date.getDay();
+
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const dateString = `${year}-${month}-${day}`;
+
+          const dayData = response.data.data.dailyAnalysis.find(
+            item => item.date === dateString
+          );
+
+          allDaysMap.set(dayOfWeek, {
+            day: dayOfWeek,
+            count: dayData ? dayData.total : 0,
+            date: dateString,
+          });
+        }
+
+        const orderedDays: Array<{ day: number; count: number; date: string }> =
+          [];
+        for (let day = 1; day <= 6; day++) {
+          if (allDaysMap.has(day)) {
+            orderedDays.push(allDaysMap.get(day)!);
+          }
+        }
+        if (allDaysMap.has(0)) {
+          orderedDays.push(allDaysMap.get(0)!);
+        }
+
+        const transformedData: DailyStatsResponse = {
+          dailyAnalysis: orderedDays,
+          period_days: response.data.data.period_days,
+        };
+
+        return {
+          success: true,
+          data: transformedData,
+        };
+      } else {
+        return {
+          success: false,
+          error:
+            response.data?.message || 'Error al obtener estadísticas diarias',
+        };
+      }
+    } catch {
+      return {
+        success: false,
+        error: 'Error de conexión al obtener estadísticas diarias',
+      };
+    }
+  }
+
+  /**
+   * Gets a specific analysis by ID
+   */
+  async getAnalysisById(
+    analysisId: number
+  ): Promise<ApiResponse<AnalysisResult>> {
+    try {
+      const response = await httpService.get<{
+        success: boolean;
+        data: AnalysisResult;
+        message: string;
+      }>(`/api/analyses/${analysisId}`);
+
+      if (response.success && response.data) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      } else {
+        return {
+          success: false,
+          error: response.data?.message || 'Error al obtener análisis',
+        };
+      }
+    } catch {
+      return {
+        success: false,
+        error: 'Error de conexión al obtener análisis',
+      };
+    }
+  }
+}
+
+export const dashboardService = new DashboardService();
