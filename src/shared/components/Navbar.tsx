@@ -8,7 +8,10 @@ interface NavItem {
   path: string;
 }
 
-const navItems: NavItem[] = [{ label: 'Inicio', path: '/' }];
+const navItems: NavItem[] = [
+  { label: 'Inicio', path: '/' },
+  { label: 'Dashboard', path: '/dashboard' },
+];
 
 export const Navbar = () => {
   const location = useLocation();
@@ -58,7 +61,6 @@ export const Navbar = () => {
             </Link>
           </Flex>
 
-          {/* Navegación y Server Status - lado derecho */}
           <Flex align="center" gap={4}>
             <Box display={{ base: 'none', md: 'flex' }}>
               <Flex align="center" gap={4}>
