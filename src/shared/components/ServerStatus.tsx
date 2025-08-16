@@ -32,7 +32,11 @@ const ServerStatus: React.FC<ServerStatusProps> = () => {
       alignItems="center"
       gap={2}
     >
-      {isLoading && <Spinner size="xs" />}
+      {isLoading ? (
+        <Spinner size="xs" />
+      ) : (
+        <Box w={2} h={2} borderRadius="full" bg={getStatusColor()} />
+      )}
       <Text fontSize="sm" fontWeight="medium" color={getStatusColor()}>
         {getStatusText()}
       </Text>
