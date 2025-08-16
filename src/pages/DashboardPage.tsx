@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Container,
@@ -9,6 +9,7 @@ import {
   Alert,
 } from '@chakra-ui/react';
 import { Layout } from '../shared/components/Layout';
+import { usePagination } from '../shared/hooks';
 import {
   formatDiseaseName,
   formatDayName,
@@ -46,10 +47,53 @@ const initialState: DashboardState = {
 
 const DashboardPage: React.FC = () => {
   const [state, setState] = useState<DashboardState>(initialState);
+  const { currentPage, pageSize, pagination, setCurrentPage, setPagination } =
+    usePagination({ initialPage: 1, initialPageSize: 10 });
+  const { data, loading, error } = state;
+  const stats = data.statistics;
+
+  const loadRecentAnalyses = useCallback(async () => {
+    setState(prev => ({
+      ...prev,
+      loading: { ...prev.loading, recentAnalyses: true },
+      error: { ...prev.error, recentAnalyses: null },
+    }));
+
+    const analysesResponse = await dashboardService.getRecentAnalyses(
+      currentPage,
+      pageSize
+    );
+
+    if (analysesResponse.success) {
+      setState(prev => ({
+        ...prev,
+        data: {
+          ...prev.data,
+          recentAnalyses: analysesResponse.data?.analyses || [],
+        },
+        loading: { ...prev.loading, recentAnalyses: false },
+      }));
+
+      setPagination(analysesResponse.data?.pagination);
+    } else {
+      setState(prev => ({
+        ...prev,
+        loading: { ...prev.loading, recentAnalyses: false },
+        error: {
+          ...prev.error,
+          recentAnalyses: analysesResponse.error || 'Error al cargar análisis',
+        },
+      }));
+    }
+  }, [currentPage, pageSize, setPagination]);
 
   useEffect(() => {
     loadDashboardData();
   }, []);
+
+  useEffect(() => {
+    loadRecentAnalyses();
+  }, [loadRecentAnalyses]);
 
   const loadDashboardData = async () => {
     setState(prev => ({
@@ -72,30 +116,6 @@ const DashboardPage: React.FC = () => {
         error: {
           ...prev.error,
           statistics: statsResponse.error || 'Error al cargar estadísticas',
-        },
-      }));
-    }
-
-    setState(prev => ({
-      ...prev,
-      loading: { ...prev.loading, recentAnalyses: true },
-      error: { ...prev.error, recentAnalyses: null },
-    }));
-
-    const analysesResponse = await dashboardService.getRecentAnalyses(10);
-    if (analysesResponse.success) {
-      setState(prev => ({
-        ...prev,
-        data: { ...prev.data, recentAnalyses: analysesResponse.data || [] },
-        loading: { ...prev.loading, recentAnalyses: false },
-      }));
-    } else {
-      setState(prev => ({
-        ...prev,
-        loading: { ...prev.loading, recentAnalyses: false },
-        error: {
-          ...prev.error,
-          recentAnalyses: analysesResponse.error || 'Error al cargar análisis',
         },
       }));
     }
@@ -129,8 +149,9 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  const { data, loading, error } = state;
-  const stats = data.statistics;
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Layout>
@@ -230,6 +251,8 @@ const DashboardPage: React.FC = () => {
             translateStatus={translateStatus}
             getConfianzaColor={getConfianzaColor}
             formatAnalysisDate={formatAnalysisDate}
+            pagination={pagination}
+            onPageChange={handlePageChange}
           />
         </VStack>
       </Container>

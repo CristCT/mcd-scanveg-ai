@@ -9,8 +9,8 @@ import {
   Table,
   Badge,
 } from '@chakra-ui/react';
-import { ErrorAlert } from '../../../shared/components';
-import type { AnalysisResult } from '../../../shared/types';
+import { ErrorAlert, PaginationControls } from '../../../shared/components';
+import type { AnalysisResult, PaginationInfo } from '../../../shared/types';
 
 const getValidProgressValue = (value: number): number => {
   return isNaN(value) || !isFinite(value)
@@ -27,6 +27,8 @@ interface RecentAnalysesCardProps {
   formatAnalysisDate: (dateString: string) => string;
   loading?: boolean;
   error?: string | null;
+  pagination?: PaginationInfo;
+  onPageChange?: (page: number) => void;
 }
 
 export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
@@ -38,6 +40,8 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
   formatAnalysisDate,
   loading = false,
   error = null,
+  pagination,
+  onPageChange,
 }) => {
   const getEstadoBadge = (estado: string) => {
     return (
@@ -113,6 +117,14 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
               </Table.Body>
             </Table.Root>
           </Table.ScrollArea>
+        )}
+
+        {pagination && onPageChange && (
+          <PaginationControls
+            pagination={pagination}
+            onPageChange={onPageChange}
+            itemName="análisis"
+          />
         )}
       </Card.Body>
     </Card.Root>

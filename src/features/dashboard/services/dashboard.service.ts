@@ -5,6 +5,7 @@ import type {
   RecentAnalysesResponse,
   DailyStatsResponse,
   AnalysisResult,
+  PaginationInfo,
 } from '../../../shared/types';
 
 interface BackendAnalysisItem {
@@ -61,7 +62,7 @@ class DashboardService {
       }>('/api/statistics');
 
       if (response.success && response.data) {
-        const recentAnalysesResponse = await this.getRecentAnalyses(100);
+        const recentAnalysesResponse = await this.getRecentAnalyses(1, 100);
         let todayCount = 0;
         let totalConfidence = 0;
         let analysisCount = 0;
@@ -71,7 +72,7 @@ class DashboardService {
         if (recentAnalysesResponse.success && recentAnalysesResponse.data) {
           const today = new Date().toISOString().split('T')[0];
 
-          recentAnalysesResponse.data.forEach(analysis => {
+          recentAnalysesResponse.data.analyses.forEach(analysis => {
             const analysisDate = analysis.date.split('T')[0];
             if (analysisDate === today) {
               todayCount++;
@@ -127,17 +128,20 @@ class DashboardService {
   }
 
   /**
-   * Gets the most recent analyses
+   * Gets recent analyses with pagination
    */
   async getRecentAnalyses(
-    limit: number = 10
-  ): Promise<ApiResponse<AnalysisResult[]>> {
+    page: number = 1,
+    pageSize: number = 10
+  ): Promise<
+    ApiResponse<{ analyses: AnalysisResult[]; pagination: PaginationInfo }>
+  > {
     try {
       const response = await httpService.get<{
         success: boolean;
         data: RecentAnalysesResponse;
         message: string;
-      }>(`/api/analyses/recent?limit=${limit}`);
+      }>(`/api/analyses/recent?page=${page}&page_size=${pageSize}`);
 
       if (response.success && response.data) {
         const transformedAnalyses = response.data.data.analyses.map(
@@ -164,7 +168,10 @@ class DashboardService {
 
         return {
           success: true,
-          data: transformedAnalyses,
+          data: {
+            analyses: transformedAnalyses,
+            pagination: response.data.data.pagination,
+          },
         };
       } else {
         return {

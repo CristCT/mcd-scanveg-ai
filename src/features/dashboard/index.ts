@@ -14,6 +14,7 @@ export type {
   DailyStatsResponse,
   DashboardData,
   DashboardState,
+  PaginationInfo,
 } from '../../shared/types';
 
 export { dashboardService } from './services/dashboard.service';

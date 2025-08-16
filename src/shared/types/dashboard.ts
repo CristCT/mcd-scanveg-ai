@@ -30,9 +30,20 @@ export interface AnalysisResult {
   success: boolean;
 }
 
+export interface PaginationInfo {
+  page: number;
+  page_size: number;
+  total_items: number;
+  total_pages: number;
+  has_next: boolean;
+  has_prev: boolean;
+  next_page: number | null;
+  prev_page: number | null;
+}
+
 export interface RecentAnalysesResponse {
   analyses: AnalysisResult[];
-  total: number;
+  pagination: PaginationInfo;
 }
 
 export interface DailyAnalysisItem {
