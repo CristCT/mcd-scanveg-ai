@@ -46,7 +46,7 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
   const getEstadoBadge = (estado: string) => {
     return (
       <Badge
-        colorScheme={estado === 'healthy' ? 'green' : 'red'}
+        colorPalette={estado === 'healthy' ? 'green' : 'red'}
         variant="subtle"
         px={2}
       >
