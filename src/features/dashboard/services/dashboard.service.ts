@@ -6,6 +6,7 @@ import type {
   DailyStatsResponse,
   AnalysisResult,
   PaginationInfo,
+  DiseaseDistribution,
 } from '../../../shared/types';
 
 interface BackendAnalysisItem {
@@ -67,8 +68,6 @@ class DashboardService {
         let totalConfidence = 0;
         let analysisCount = 0;
 
-        const diseaseCount = new Map<string, number>();
-
         if (recentAnalysesResponse.success && recentAnalysesResponse.data) {
           const today = new Date().toISOString().split('T')[0];
 
@@ -80,11 +79,22 @@ class DashboardService {
 
             totalConfidence += analysis.confidence;
             analysisCount++;
-            const disease = analysis.disease;
-            if (disease !== 'Tomato_healthy') {
-              diseaseCount.set(disease, (diseaseCount.get(disease) || 0) + 1);
-            }
           });
+        }
+
+        const diseasesResponse = await httpService.get<{
+          success: boolean;
+          data: { diseases: Array<{ name: string; count: number }> };
+          message: string;
+        }>('/api/diseases/distribution');
+
+        let diseases: DiseaseDistribution[] = [];
+        if (diseasesResponse.success && diseasesResponse.data) {
+          diseases = diseasesResponse.data.data.diseases.map(disease => ({
+            name: disease.name,
+            count: disease.count,
+            color: this.getDiseaseColor(disease.name),
+          }));
         }
 
         const backendData = response.data.data;
@@ -100,13 +110,7 @@ class DashboardService {
                     100
                 )
               : 0,
-          diseases: Array.from(diseaseCount.entries())
-            .map(([disease, count]) => ({
-              name: disease,
-              count: count,
-              color: this.getDiseaseColor(disease),
-            }))
-            .sort((a, b) => b.count - a.count),
+          diseases: diseases,
         };
 
         return {

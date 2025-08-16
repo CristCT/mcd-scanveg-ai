@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Heading, VStack, Text, Spinner } from '@chakra-ui/react';
 import { Chart, useChart } from '@chakra-ui/charts';
-import { Cell, Pie, PieChart } from 'recharts';
+import { Cell, Pie, PieChart, Tooltip } from 'recharts';
 import { ErrorAlert } from '../../../shared/components';
 
 interface HealthStatusCardProps {
@@ -57,6 +57,11 @@ export const HealthStatusCard: React.FC<HealthStatusCardProps> = ({
           <VStack align="center" gap={4}>
             <Chart.Root boxSize="200px" mx="auto" chart={chart}>
               <PieChart>
+                <Tooltip
+                  cursor={false}
+                  animationDuration={400}
+                  content={<Chart.Tooltip hideLabel />}
+                />
                 <Pie
                   isAnimationActive={true}
                   data={chart.data}
@@ -67,7 +72,11 @@ export const HealthStatusCard: React.FC<HealthStatusCardProps> = ({
                 >
                   {chart.data.map(item => {
                     return (
-                      <Cell key={item.name} fill={chart.color(item.color)} />
+                      <Cell
+                        key={item.name}
+                        strokeWidth={6}
+                        fill={chart.color(item.color)}
+                      />
                     );
                   })}
                 </Pie>
