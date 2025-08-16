@@ -8,6 +8,7 @@ import {
   Spinner,
   Table,
   Badge,
+  HStack,
 } from '@chakra-ui/react';
 import { ErrorAlert, PaginationControls } from '../../../shared/components';
 import type { AnalysisResult, PaginationInfo } from '../../../shared/types';
@@ -97,21 +98,21 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
                       </Text>
                     </Table.Cell>
                     <Table.Cell>
-                      <VStack align="start" gap={2}>
-                        <Text fontWeight="medium">
+                      <HStack align="center" gap={2}>
+                        <Text fontWeight="medium" w="50px">
                           {item.confidence.toFixed(1)}%
                         </Text>
                         <Progress.Root
                           value={getValidProgressValue(item.confidence)}
                           size="sm"
                           colorPalette={getConfianzaColor(item.confidence)}
-                          w="60px"
+                          w="100px"
                         >
                           <Progress.Track>
                             <Progress.Range />
                           </Progress.Track>
                         </Progress.Root>
-                      </VStack>
+                      </HStack>
                     </Table.Cell>
                     <Table.Cell>{getEstadoBadge(item.status)}</Table.Cell>
                   </Table.Row>
