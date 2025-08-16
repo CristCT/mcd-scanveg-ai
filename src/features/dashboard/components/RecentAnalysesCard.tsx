@@ -77,7 +77,7 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
             <Table.Root size="sm" variant="outline">
               <Table.Header>
                 <Table.Row>
-                  <Table.ColumnHeader>ID</Table.ColumnHeader>
+                  <Table.ColumnHeader p={2}>ID</Table.ColumnHeader>
                   <Table.ColumnHeader>Fecha</Table.ColumnHeader>
                   <Table.ColumnHeader>Enfermedad</Table.ColumnHeader>
                   <Table.ColumnHeader>Confianza</Table.ColumnHeader>
@@ -87,7 +87,9 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
               <Table.Body>
                 {analyses.map(item => (
                   <Table.Row key={item.id}>
-                    <Table.Cell fontWeight="medium">#{item.id}</Table.Cell>
+                    <Table.Cell p={2} fontWeight="medium">
+                      #{item.id}
+                    </Table.Cell>
                     <Table.Cell>{formatAnalysisDate(item.date)}</Table.Cell>
                     <Table.Cell>
                       <Text fontWeight="medium">
