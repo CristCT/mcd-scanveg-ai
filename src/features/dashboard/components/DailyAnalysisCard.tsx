@@ -1,5 +1,13 @@
 import React from 'react';
-import { Card, Heading, VStack, Text, Spinner } from '@chakra-ui/react';
+import {
+  Card,
+  Heading,
+  VStack,
+  HStack,
+  Text,
+  Spinner,
+  Button,
+} from '@chakra-ui/react';
 import { ErrorAlert } from '../../../shared/components';
 import type { DailyAnalysisItem } from '../../../shared/types';
 import { BarList, type BarListData, useChart } from '@chakra-ui/charts';
@@ -10,6 +18,10 @@ interface DailyAnalysisCardProps {
   formatDayName: (day: number | undefined | null) => string;
   loading?: boolean;
   error?: string | null;
+  currentPage?: number;
+  onPageChange?: (direction: 'prev' | 'next') => void;
+  startDate?: string;
+  endDate?: string;
 }
 
 export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
@@ -18,6 +30,9 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
   formatDayName,
   loading = false,
   error = null,
+  onPageChange,
+  startDate = '',
+  endDate = '',
 }) => {
   const nf = new Intl.NumberFormat();
 
@@ -32,8 +47,7 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
 
   const chart = useChart<BarListData>({
     data,
-    sort: { by: 'name', direction: 'asc' },
-    series: [{ name: 'name', color: 'blue.subtle' }],
+    series: [{ name: 'name', color: 'teal.subtle' }],
   });
 
   return (
@@ -56,12 +70,39 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
             </Text>
           </VStack>
         ) : (
-          <BarList.Root chart={chart}>
-            <BarList.Content>
-              <BarList.Bar rounded="full" />
-              <BarList.Value valueFormatter={v => nf.format(v)} />
-            </BarList.Content>
-          </BarList.Root>
+          <VStack gap={4}>
+            <BarList.Root chart={chart} w="full">
+              <BarList.Content columnGap={4}>
+                <BarList.Bar rounded="full" />
+
+                <BarList.Value valueFormatter={v => nf.format(v)} />
+              </BarList.Content>
+            </BarList.Root>
+
+            {onPageChange && (
+              <HStack justify="space-between" align="center" w="full">
+                <Button
+                  p={2}
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onPageChange('prev')}
+                >
+                  ← Anterior
+                </Button>
+                <Text fontSize="sm" color="gray.600">
+                  {startDate && endDate ? `${startDate} - ${endDate}` : ''}
+                </Text>
+                <Button
+                  p={2}
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onPageChange('next')}
+                >
+                  Siguiente →
+                </Button>
+              </HStack>
+            )}
+          </VStack>
         )}
       </Card.Body>
     </Card.Root>

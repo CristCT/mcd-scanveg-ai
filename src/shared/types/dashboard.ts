@@ -54,7 +54,8 @@ export interface DailyAnalysisItem {
 
 export interface DailyStatsResponse {
   dailyAnalysis: DailyAnalysisItem[];
-  period_days: number;
+  start_date: string;
+  end_date: string;
 }
 
 export interface DashboardData {

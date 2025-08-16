@@ -193,10 +193,11 @@ class DashboardService {
   }
 
   /**
-   * Gets the daily statistics
+   * Gets the week statistics
    */
-  async getDailyStats(
-    days: number = 7
+  async getWeekStats(
+    weekStart: string,
+    weekEnd: string
   ): Promise<ApiResponse<DailyStatsResponse>> {
     try {
       const response = await httpService.get<{
@@ -208,10 +209,13 @@ class DashboardService {
             healthy: number;
             diseased: number;
           }>;
-          period_days: number;
+          start_date: string;
+          end_date: string;
         };
         message: string;
-      }>(`/api/analyses/daily-stats?days=${days}`);
+      }>(
+        `/api/analyses/week-stats?week_start=${weekStart}&week_end=${weekEnd}`
+      );
 
       if (response.success && response.data) {
         const today = new Date();
@@ -242,20 +246,23 @@ class DashboardService {
           });
         }
 
+        const currentDate = new Date();
+        const todayDayOfWeek = currentDate.getDay();
+
         const orderedDays: Array<{ day: number; count: number; date: string }> =
           [];
-        for (let day = 1; day <= 6; day++) {
-          if (allDaysMap.has(day)) {
-            orderedDays.push(allDaysMap.get(day)!);
+
+        for (let i = 0; i < 7; i++) {
+          const dayIndex = (todayDayOfWeek + i) % 7;
+          if (allDaysMap.has(dayIndex)) {
+            orderedDays.push(allDaysMap.get(dayIndex)!);
           }
-        }
-        if (allDaysMap.has(0)) {
-          orderedDays.push(allDaysMap.get(0)!);
         }
 
         const transformedData: DailyStatsResponse = {
           dailyAnalysis: orderedDays,
-          period_days: response.data.data.period_days,
+          start_date: response.data.data.start_date,
+          end_date: response.data.data.end_date,
         };
 
         return {

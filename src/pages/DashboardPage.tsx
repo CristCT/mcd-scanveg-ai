@@ -26,6 +26,7 @@ import {
   dashboardService,
 } from '../features/dashboard';
 import type { DashboardState } from '../features/dashboard';
+import type { DailyAnalysisItem } from '../shared/types';
 
 const initialState: DashboardState = {
   data: {
@@ -49,6 +50,34 @@ const DashboardPage: React.FC = () => {
   const [state, setState] = useState<DashboardState>(initialState);
   const { currentPage, pageSize, pagination, setCurrentPage, setPagination } =
     usePagination({ initialPage: 1, initialPageSize: 10 });
+
+  const startOfLocalDay = (d: Date) => {
+    const x = new Date(d);
+    x.setHours(0, 0, 0, 0);
+    return x;
+  };
+
+  const addDays = (d: Date, days: number) => {
+    const x = new Date(d);
+    x.setDate(x.getDate() + days);
+    return x;
+  };
+
+  const formatYMDLocal = (d: Date) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dd}`;
+  };
+
+  const baseDateRef = React.useRef<Date>(startOfLocalDay(new Date()));
+
+  const [dailyStatsPage, setDailyStatsPage] = useState(0);
+  const [dailyStatsData, setDailyStatsData] = useState<{
+    analyses: DailyAnalysisItem[];
+    start_date: string;
+    end_date: string;
+  }>({ analyses: [], start_date: '', end_date: '' });
   const { data, loading, error } = state;
   const stats = data.statistics;
 
@@ -87,6 +116,52 @@ const DashboardPage: React.FC = () => {
     }
   }, [currentPage, pageSize, setPagination]);
 
+  const loadDailyStats = useCallback(async () => {
+    setState(prev => ({
+      ...prev,
+      loading: { ...prev.loading, dailyStats: true },
+      error: { ...prev.error, dailyStats: null },
+    }));
+
+    const startDate = addDays(baseDateRef.current, dailyStatsPage * 7);
+    const endDate = addDays(startDate, 6);
+
+    const weekStart = formatYMDLocal(startDate);
+    const weekEnd = formatYMDLocal(endDate);
+
+    const weekResponse = await dashboardService.getWeekStats(
+      weekStart,
+      weekEnd
+    );
+
+    if (weekResponse.success) {
+      setState(prev => ({
+        ...prev,
+        data: {
+          ...prev.data,
+          dailyStats: weekResponse.data?.dailyAnalysis || [],
+        },
+        loading: { ...prev.loading, dailyStats: false },
+      }));
+
+      setDailyStatsData({
+        analyses: weekResponse.data?.dailyAnalysis || [],
+        start_date: weekResponse.data?.start_date || weekStart,
+        end_date: weekResponse.data?.end_date || weekEnd,
+      });
+    } else {
+      setState(prev => ({
+        ...prev,
+        loading: { ...prev.loading, dailyStats: false },
+        error: {
+          ...prev.error,
+          dailyStats:
+            weekResponse.error || 'Error al cargar estadísticas semanales',
+        },
+      }));
+    }
+  }, [dailyStatsPage]);
+
   useEffect(() => {
     loadDashboardData();
   }, []);
@@ -94,6 +169,10 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     loadRecentAnalyses();
   }, [loadRecentAnalyses]);
+
+  useEffect(() => {
+    loadDailyStats();
+  }, [loadDailyStats]);
 
   const loadDashboardData = async () => {
     setState(prev => ({
@@ -119,38 +198,14 @@ const DashboardPage: React.FC = () => {
         },
       }));
     }
-
-    setState(prev => ({
-      ...prev,
-      loading: { ...prev.loading, dailyStats: true },
-      error: { ...prev.error, dailyStats: null },
-    }));
-
-    const dailyResponse = await dashboardService.getDailyStats(7);
-    if (dailyResponse.success) {
-      setState(prev => ({
-        ...prev,
-        data: {
-          ...prev.data,
-          dailyStats: dailyResponse.data?.dailyAnalysis || [],
-        },
-        loading: { ...prev.loading, dailyStats: false },
-      }));
-    } else {
-      setState(prev => ({
-        ...prev,
-        loading: { ...prev.loading, dailyStats: false },
-        error: {
-          ...prev.error,
-          dailyStats:
-            dailyResponse.error || 'Error al cargar estadísticas diarias',
-        },
-      }));
-    }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleDailyStatsPageChange = (direction: 'prev' | 'next') => {
+    setDailyStatsPage(prev => (direction === 'next' ? prev + 1 : prev - 1));
   };
 
   return (
@@ -220,11 +275,15 @@ const DashboardPage: React.FC = () => {
 
           <Grid templateColumns={{ base: '1fr', lg: 'repeat(3, 1fr)' }} gap={6}>
             <DailyAnalysisCard
-              title="Análisis por Día"
+              title="Análisis por Semana"
               dailyData={data.dailyStats}
               formatDayName={formatDayName}
               loading={loading.dailyStats}
               error={error.dailyStats}
+              currentPage={dailyStatsPage}
+              onPageChange={handleDailyStatsPageChange}
+              startDate={dailyStatsData.start_date}
+              endDate={dailyStatsData.end_date}
             />
             <DiseaseDistributionCard
               title="Enfermedades Detectadas"
