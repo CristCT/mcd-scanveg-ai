@@ -197,7 +197,7 @@ const DashboardPage: React.FC = () => {
               loading={loading.statistics}
             />
             <StatisticsCard
-              label="Confianza Promedio"
+              label="Nivel Promedio de Confianza"
               value={
                 loading.statistics
                   ? undefined
