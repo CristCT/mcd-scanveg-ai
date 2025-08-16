@@ -9,12 +9,12 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { ErrorAlert } from '../../../shared/components';
-import type { DailyAnalysisItem } from '../../../shared/types';
+import type { WeeklyAnalysisItem } from '../../../shared/types';
 import { BarList, type BarListData, useChart } from '@chakra-ui/charts';
 
-interface DailyAnalysisCardProps {
+interface WeeklyAnalysisCardProps {
   title: string;
-  dailyData: DailyAnalysisItem[];
+  weeklyData: WeeklyAnalysisItem[];
   formatDayName: (day: number | undefined | null) => string;
   loading?: boolean;
   error?: string | null;
@@ -24,9 +24,9 @@ interface DailyAnalysisCardProps {
   endDate?: string;
 }
 
-export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
+export const WeeklyAnalysisCard: React.FC<WeeklyAnalysisCardProps> = ({
   title,
-  dailyData,
+  weeklyData,
   formatDayName,
   loading = false,
   error = null,
@@ -38,11 +38,11 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
 
   const data = React.useMemo<BarListData[]>(
     () =>
-      dailyData.map(d => ({
+      weeklyData.map(d => ({
         name: formatDayName(d.day),
         value: d.count,
       })),
-    [dailyData, formatDayName]
+    [weeklyData, formatDayName]
   );
 
   const chart = useChart<BarListData>({
@@ -61,12 +61,12 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
         {loading ? (
           <VStack justify="center" align="center" h="200px">
             <Spinner size="lg" />
-            <Text>Cargando análisis diarios...</Text>
+            <Text>Cargando análisis semanales...</Text>
           </VStack>
         ) : data.length === 0 ? (
           <VStack justify="center" align="center" h="200px">
             <Text color="gray.500">
-              No hay datos de análisis diarios disponibles
+              No hay datos de análisis semanales disponibles
             </Text>
           </VStack>
         ) : (

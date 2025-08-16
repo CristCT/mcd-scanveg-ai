@@ -1,7 +1,7 @@
 export {
   StatisticsCard,
   DiseaseDistributionCard,
-  DailyAnalysisCard,
+  WeeklyAnalysisCard,
   HealthStatusCard,
   RecentAnalysesCard,
 } from './components';
@@ -10,7 +10,7 @@ export type {
   DiseaseDistribution,
   AnalysisResult,
   RecentAnalysesResponse,
-  DailyAnalysisItem,
+  WeeklyAnalysisItem,
   DailyStatsResponse,
   DashboardData,
   DashboardState,

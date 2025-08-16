@@ -46,14 +46,14 @@ export interface RecentAnalysesResponse {
   pagination: PaginationInfo;
 }
 
-export interface DailyAnalysisItem {
+export interface WeeklyAnalysisItem {
   day: number;
   count: number;
   date: string;
 }
 
 export interface DailyStatsResponse {
-  dailyAnalysis: DailyAnalysisItem[];
+  dailyAnalysis: WeeklyAnalysisItem[];
   start_date: string;
   end_date: string;
 }
@@ -61,7 +61,7 @@ export interface DailyStatsResponse {
 export interface DashboardData {
   statistics: Statistics | null;
   recentAnalyses: AnalysisResult[];
-  dailyStats: DailyAnalysisItem[];
+  dailyStats: WeeklyAnalysisItem[];
 }
 
 export interface DashboardState {

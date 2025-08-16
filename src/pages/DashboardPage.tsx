@@ -20,13 +20,13 @@ import {
 import {
   StatisticsCard,
   DiseaseDistributionCard,
-  DailyAnalysisCard,
+  WeeklyAnalysisCard,
   HealthStatusCard,
   RecentAnalysesCard,
   dashboardService,
 } from '../features/dashboard';
 import type { DashboardState } from '../features/dashboard';
-import type { DailyAnalysisItem } from '../shared/types';
+import type { WeeklyAnalysisItem } from '../shared/types';
 
 const initialState: DashboardState = {
   data: {
@@ -74,7 +74,7 @@ const DashboardPage: React.FC = () => {
 
   const [dailyStatsPage, setDailyStatsPage] = useState(0);
   const [dailyStatsData, setDailyStatsData] = useState<{
-    analyses: DailyAnalysisItem[];
+    analyses: WeeklyAnalysisItem[];
     start_date: string;
     end_date: string;
   }>({ analyses: [], start_date: '', end_date: '' });
@@ -274,9 +274,9 @@ const DashboardPage: React.FC = () => {
           </Grid>
 
           <Grid templateColumns={{ base: '1fr', lg: 'repeat(3, 1fr)' }} gap={6}>
-            <DailyAnalysisCard
+            <WeeklyAnalysisCard
               title="Análisis por Semana"
-              dailyData={data.dailyStats}
+              weeklyData={data.dailyStats}
               formatDayName={formatDayName}
               loading={loading.dailyStats}
               error={error.dailyStats}
