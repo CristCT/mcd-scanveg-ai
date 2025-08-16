@@ -36,14 +36,62 @@ class DashboardService {
     try {
       const response = await httpService.get<{
         success: boolean;
-        data: Statistics;
+        data: {
+          total_analyses: number;
+          healthy_plants: number;
+          diseased_plants: number;
+          most_common_disease: string;
+        };
         message: string;
       }>('/api/statistics');
 
       if (response.success && response.data) {
+        const recentAnalysesResponse = await this.getRecentAnalyses(100);
+        let todayCount = 0;
+        let totalConfidence = 0;
+        let analysisCount = 0;
+
+        if (recentAnalysesResponse.success && recentAnalysesResponse.data) {
+          const today = new Date().toISOString().split('T')[0];
+
+          recentAnalysesResponse.data.forEach(analysis => {
+            const analysisDate = analysis.date.split('T')[0];
+            if (analysisDate === today) {
+              todayCount++;
+            }
+
+            totalConfidence += analysis.confidence;
+            analysisCount++;
+          });
+        }
+
+        const backendData = response.data.data;
+        const transformedData: Statistics = {
+          totalAnalysis: backendData.total_analyses,
+          todayAnalysis: todayCount,
+          averageConfidence:
+            analysisCount > 0 ? Math.round(totalConfidence / analysisCount) : 0,
+          healthyTomatoes:
+            backendData.total_analyses > 0
+              ? Math.round(
+                  (backendData.healthy_plants / backendData.total_analyses) *
+                    100
+                )
+              : 0,
+          diseases: backendData.most_common_disease
+            ? [
+                {
+                  name: backendData.most_common_disease,
+                  count: backendData.diseased_plants,
+                  color: 'red.500',
+                },
+              ]
+            : [],
+        };
+
         return {
           success: true,
-          data: response.data.data,
+          data: transformedData,
         };
       } else {
         return {
