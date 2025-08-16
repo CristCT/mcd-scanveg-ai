@@ -22,15 +22,6 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
 }) => {
   return (
     <VStack gap={3} mt={4}>
-      <Text fontSize="sm" color="gray.600">
-        Mostrando {(pagination.page - 1) * pagination.page_size + 1} -{' '}
-        {Math.min(
-          pagination.page * pagination.page_size,
-          pagination.total_items
-        )}{' '}
-        de {pagination.total_items} {itemName}
-      </Text>
-
       <Pagination.Root
         count={pagination.total_items}
         pageSize={pagination.page_size}
@@ -59,6 +50,15 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
           </Pagination.NextTrigger>
         </ButtonGroup>
       </Pagination.Root>
+
+      <Text fontSize="sm" color="gray.600">
+        Mostrando {(pagination.page - 1) * pagination.page_size + 1} -{' '}
+        {Math.min(
+          pagination.page * pagination.page_size,
+          pagination.total_items
+        )}{' '}
+        de {pagination.total_items} {itemName}
+      </Text>
     </VStack>
   );
 };
