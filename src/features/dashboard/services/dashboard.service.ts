@@ -29,6 +29,21 @@ interface BackendAnalysisItem {
 }
 
 class DashboardService {
+  private getDiseaseColor(disease: string): string {
+    const colorMap: Record<string, string> = {
+      Tomato_healthy: 'green.500',
+      Tomato_Late_blight: 'red.500',
+      Tomato_Early_blight: 'orange.500',
+      Tomato__Tomato_mosaic_virus: 'purple.500',
+      Tomato_Bacterial_spot: 'yellow.600',
+      Tomato_Leaf_Mold: 'blue.500',
+      Tomato_Septoria_leaf_spot: 'pink.500',
+      Tomato_Spider_mites_Two_spotted_spider_mite: 'teal.500',
+      Tomato__Target_Spot: 'cyan.500',
+      Tomato__Tomato_YellowLeaf__Curl_Virus: 'lime.500',
+    };
+    return colorMap[disease] || 'gray.500';
+  }
   /**
    * Gets the general dashboard statistics
    */
@@ -51,6 +66,8 @@ class DashboardService {
         let totalConfidence = 0;
         let analysisCount = 0;
 
+        const diseaseCount = new Map<string, number>();
+
         if (recentAnalysesResponse.success && recentAnalysesResponse.data) {
           const today = new Date().toISOString().split('T')[0];
 
@@ -62,6 +79,9 @@ class DashboardService {
 
             totalConfidence += analysis.confidence;
             analysisCount++;
+
+            const disease = analysis.disease;
+            diseaseCount.set(disease, (diseaseCount.get(disease) || 0) + 1);
           });
         }
 
@@ -78,15 +98,13 @@ class DashboardService {
                     100
                 )
               : 0,
-          diseases: backendData.most_common_disease
-            ? [
-                {
-                  name: backendData.most_common_disease,
-                  count: backendData.diseased_plants,
-                  color: 'red.500',
-                },
-              ]
-            : [],
+          diseases: Array.from(diseaseCount.entries())
+            .map(([disease, count]) => ({
+              name: disease,
+              count: count,
+              color: this.getDiseaseColor(disease),
+            }))
+            .sort((a, b) => b.count - a.count),
         };
 
         return {
