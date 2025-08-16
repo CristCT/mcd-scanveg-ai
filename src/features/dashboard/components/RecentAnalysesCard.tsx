@@ -74,7 +74,7 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
           </VStack>
         ) : (
           <Table.ScrollArea>
-            <Table.Root size="sm" variant="outline">
+            <Table.Root size="sm" variant="outline" interactive>
               <Table.Header>
                 <Table.Row>
                   <Table.ColumnHeader p={2}>ID</Table.ColumnHeader>
