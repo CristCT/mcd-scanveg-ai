@@ -177,23 +177,23 @@ const DashboardPage: React.FC = () => {
 
           <Grid templateColumns={{ base: '1fr', md: 'repeat(4, 1fr)' }} gap={6}>
             <StatisticsCard
-              label="Total Análisis"
+              label="Análisis Históricos"
               value={
                 loading.statistics
                   ? undefined
                   : (stats?.totalAnalysis || 0).toLocaleString()
               }
-              helpText="Histórico"
+              helpText=""
               loading={loading.statistics}
             />
             <StatisticsCard
-              label="Análisis Hoy"
+              label="Análisis de Hoy"
               value={
                 loading.statistics
                   ? undefined
                   : (stats?.todayAnalysis || 0).toString()
               }
-              helpText="Hoy"
+              helpText=""
               loading={loading.statistics}
             />
             <StatisticsCard
@@ -203,7 +203,7 @@ const DashboardPage: React.FC = () => {
                   ? undefined
                   : `${stats?.averageConfidence || 0}%`
               }
-              helpText="Promedio"
+              helpText=""
               loading={loading.statistics}
             />
             <StatisticsCard
@@ -213,7 +213,7 @@ const DashboardPage: React.FC = () => {
                   ? undefined
                   : `${stats?.healthyTomatoes || 0}%`
               }
-              helpText="Saludables"
+              helpText=""
               loading={loading.statistics}
             />
           </Grid>
