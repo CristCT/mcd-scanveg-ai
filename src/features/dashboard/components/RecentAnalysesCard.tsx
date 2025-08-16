@@ -74,7 +74,7 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
           </VStack>
         ) : (
           <Table.ScrollArea>
-            <Table.Root variant="line">
+            <Table.Root size="sm" variant="outline">
               <Table.Header>
                 <Table.Row>
                   <Table.ColumnHeader>ID</Table.ColumnHeader>
@@ -95,7 +95,7 @@ export const RecentAnalysesCard: React.FC<RecentAnalysesCardProps> = ({
                       </Text>
                     </Table.Cell>
                     <Table.Cell>
-                      <VStack align="start" gap={1}>
+                      <VStack align="start" gap={2}>
                         <Text fontWeight="medium">
                           {item.confidence.toFixed(1)}%
                         </Text>
