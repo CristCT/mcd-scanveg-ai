@@ -79,9 +79,10 @@ class DashboardService {
 
             totalConfidence += analysis.confidence;
             analysisCount++;
-
             const disease = analysis.disease;
-            diseaseCount.set(disease, (diseaseCount.get(disease) || 0) + 1);
+            if (disease !== 'Tomato_healthy') {
+              diseaseCount.set(disease, (diseaseCount.get(disease) || 0) + 1);
+            }
           });
         }
 
