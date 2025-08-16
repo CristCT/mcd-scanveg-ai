@@ -38,7 +38,7 @@ export const HealthStatusCard: React.FC<HealthStatusCardProps> = ({
 
   return (
     <Card.Root>
-      <Card.Header p={6}>
+      <Card.Header px={6} pt={6} pb={0}>
         <Heading size="md">{title}</Heading>
       </Card.Header>
       <Card.Body p={6}>

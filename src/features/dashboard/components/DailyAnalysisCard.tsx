@@ -1,22 +1,8 @@
 import React from 'react';
-import {
-  Card,
-  Heading,
-  VStack,
-  HStack,
-  Text,
-  Progress,
-  Box,
-  Spinner,
-} from '@chakra-ui/react';
+import { Card, Heading, VStack, Text, Spinner } from '@chakra-ui/react';
 import { ErrorAlert } from '../../../shared/components';
 import type { DailyAnalysisItem } from '../../../shared/types';
-
-const getValidProgressValue = (value: number): number => {
-  return isNaN(value) || !isFinite(value)
-    ? 0
-    : Math.min(Math.max(value, 0), 100);
-};
+import { BarList, type BarListData, useChart } from '@chakra-ui/charts';
 
 interface DailyAnalysisCardProps {
   title: string;
@@ -33,11 +19,26 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
   loading = false,
   error = null,
 }) => {
-  const maxValue = Math.max(...dailyData.map(d => d.count), 1);
+  const nf = new Intl.NumberFormat();
+
+  const data = React.useMemo<BarListData[]>(
+    () =>
+      dailyData.map(d => ({
+        name: formatDayName(d.day),
+        value: d.count,
+      })),
+    [dailyData, formatDayName]
+  );
+
+  const chart = useChart<BarListData>({
+    data,
+    sort: { by: 'name', direction: 'asc' },
+    series: [{ name: 'name', color: 'blue.subtle' }],
+  });
 
   return (
     <Card.Root>
-      <Card.Header p={6}>
+      <Card.Header px={6} pt={6} pb={0}>
         <Heading size="md">{title}</Heading>
       </Card.Header>
       <Card.Body p={6}>
@@ -48,50 +49,19 @@ export const DailyAnalysisCard: React.FC<DailyAnalysisCardProps> = ({
             <Spinner size="lg" />
             <Text>Cargando análisis diarios...</Text>
           </VStack>
-        ) : dailyData.length === 0 ? (
+        ) : data.length === 0 ? (
           <VStack justify="center" align="center" h="200px">
             <Text color="gray.500">
               No hay datos de análisis diarios disponibles
             </Text>
           </VStack>
         ) : (
-          <VStack gap={3} align="stretch">
-            {dailyData.map((item, index) => (
-              <HStack key={index} align="center" gap={3}>
-                <Text
-                  fontSize="sm"
-                  fontWeight="medium"
-                  w="40px"
-                  color="gray.700"
-                >
-                  {formatDayName(item.day)}
-                </Text>
-                <Box flex="1" mx={3}>
-                  <Progress.Root
-                    value={getValidProgressValue((item.count / maxValue) * 100)}
-                    colorPalette="blue"
-                    size="lg"
-                    borderRadius="full"
-                    striped
-                    animated
-                  >
-                    <Progress.Track bg="blue.50">
-                      <Progress.Range />
-                    </Progress.Track>
-                  </Progress.Root>
-                </Box>
-                <Text
-                  fontSize="sm"
-                  fontWeight="bold"
-                  w="35px"
-                  textAlign="right"
-                  color="blue.600"
-                >
-                  {item.count}
-                </Text>
-              </HStack>
-            ))}
-          </VStack>
+          <BarList.Root chart={chart}>
+            <BarList.Content>
+              <BarList.Bar rounded="full" />
+              <BarList.Value valueFormatter={v => nf.format(v)} />
+            </BarList.Content>
+          </BarList.Root>
         )}
       </Card.Body>
     </Card.Root>
