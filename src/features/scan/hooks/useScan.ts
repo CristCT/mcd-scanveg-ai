@@ -2,6 +2,11 @@ import { useState, useCallback } from 'react';
 import { scanService } from '../services';
 import type { ScanState, ScanRequest } from '../types';
 
+/**
+ * Custom hook for managing image scanning state and operations
+ * Handles scan requests, loading states, and error management
+ * @returns Object containing scan state and functions for scanning operations
+ */
 export const useScan = () => {
   const [state, setState] = useState<ScanState>({
     result: null,
@@ -9,6 +14,10 @@ export const useScan = () => {
     error: null,
   });
 
+  /**
+   * Scans an uploaded image for tomato diseases
+   * @param request - The scan request containing the image file
+   */
   const scanImage = useCallback(async (request: ScanRequest) => {
     setState(prev => ({
       ...prev,
@@ -29,18 +38,21 @@ export const useScan = () => {
         setState(prev => ({
           ...prev,
           isLoading: false,
-          error: response.error || 'Error desconocido al procesar la imagen',
+          error: response.error || 'Unknown error processing image',
         }));
       }
     } catch {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: 'Error de conexión. Por favor, intenta de nuevo.',
+        error: 'Connection error. Please try again.',
       }));
     }
   }, []);
 
+  /**
+   * Resets the scan state to initial values
+   */
   const reset = useCallback(() => {
     setState({
       result: null,

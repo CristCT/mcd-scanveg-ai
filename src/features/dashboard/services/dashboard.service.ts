@@ -121,7 +121,7 @@ class DashboardService {
       } else {
         return {
           success: false,
-          error: response.data?.message || 'Error al obtener estadísticas',
+          error: response.data?.message || 'Failed to fetch statistics',
         };
       }
     } catch {
@@ -181,8 +181,7 @@ class DashboardService {
       } else {
         return {
           success: false,
-          error:
-            response.data?.message || 'Error al obtener análisis recientes',
+          error: response.data?.message || 'Failed to fetch recent analyses',
         };
       }
     } catch {
@@ -272,8 +271,7 @@ class DashboardService {
       } else {
         return {
           success: false,
-          error:
-            response.data?.message || 'Error al obtener estadísticas diarias',
+          error: response.data?.message || 'Failed to fetch daily statistics',
         };
       }
     } catch {
@@ -305,7 +303,7 @@ class DashboardService {
       } else {
         return {
           success: false,
-          error: response.data?.message || 'Error al obtener análisis',
+          error: response.data?.message || 'Failed to fetch analysis',
         };
       }
     } catch {

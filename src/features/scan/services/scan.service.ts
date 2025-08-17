@@ -2,6 +2,9 @@ import { httpService } from '../../../shared/services';
 import type { ScanResultData, ScanRequest } from '../types';
 import type { ApiResponse } from '../../../shared/types';
 
+/**
+ * Interface for the scan API response structure
+ */
 interface ScanResponse {
   success: boolean;
   message: string;
@@ -16,7 +19,15 @@ interface ScanResponse {
   };
 }
 
+/**
+ * Service class for handling image scanning operations
+ */
 class ScanService {
+  /**
+   * Scans an uploaded image for tomato diseases
+   * @param request - The scan request containing the image file
+   * @returns Promise resolving to scan result data or error
+   */
   async scanImage(request: ScanRequest): Promise<ApiResponse<ScanResultData>> {
     const formData = new FormData();
     formData.append('image', request.image);
@@ -51,17 +62,22 @@ class ScanService {
       } else {
         return {
           success: false,
-          error: response.data?.message || 'Error al procesar la imagen',
+          error: response.data?.message || 'Failed to process image',
         };
       }
     } catch {
       return {
         success: false,
-        error: 'Error de conexión. Por favor, intenta de nuevo.',
+        error: 'Connection error. Please try again.',
       };
     }
   }
 
+  /**
+   * Formats a disease prediction to a user-friendly Spanish name
+   * @param prediction - Raw prediction string from the ML model
+   * @returns Formatted disease name in Spanish
+   */
   private formatDiseaseName(prediction: string): string {
     const diseaseNames: Record<string, string> = {
       Tomato_Bacterial_spot: 'Mancha Bacteriana',
@@ -81,6 +97,11 @@ class ScanService {
     );
   }
 
+  /**
+   * Gets treatment recommendations for a specific disease
+   * @param prediction - Disease prediction from the ML model
+   * @returns Treatment recommendation in Spanish
+   */
   private getDiseaseTreatment(prediction: string): string {
     const treatments: Record<string, string> = {
       Tomato_Bacterial_spot:
@@ -105,7 +126,7 @@ class ScanService {
 
     return (
       treatments[prediction] ||
-      'Consulte con un especialista en fitopatología para tratamiento específico.'
+      'No hay información disponible sobre este tratamiento.'
     );
   }
 }

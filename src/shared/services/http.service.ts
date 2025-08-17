@@ -2,9 +2,16 @@ import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { ApiResponse } from '../types';
 
+/**
+ * HTTP service class for making API requests
+ * Provides a centralized way to handle HTTP operations with error handling
+ */
 class HttpService {
   private api: AxiosInstance;
 
+  /**
+   * Initializes the HTTP service with axios configuration
+   */
   constructor() {
     const baseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
 
@@ -19,6 +26,9 @@ class HttpService {
     this.setupInterceptors();
   }
 
+  /**
+   * Sets up request and response interceptors for logging and error handling
+   */
   private setupInterceptors(): void {
     this.api.interceptors.request.use(
       config => {
@@ -43,6 +53,12 @@ class HttpService {
     );
   }
 
+  /**
+   * Performs a GET request to the specified URL
+   * @param url - The endpoint URL
+   * @param config - Optional axios request configuration
+   * @returns Promise resolving to API response with typed data
+   */
   async get<T>(
     url: string,
     config?: AxiosRequestConfig
@@ -58,6 +74,13 @@ class HttpService {
     }
   }
 
+  /**
+   * Performs a POST request to the specified URL
+   * @param url - The endpoint URL
+   * @param data - Request payload data
+   * @param config - Optional axios request configuration
+   * @returns Promise resolving to API response with typed data
+   */
   async post<T>(
     url: string,
     data?: unknown,
@@ -74,6 +97,13 @@ class HttpService {
     }
   }
 
+  /**
+   * Performs a POST request with FormData (for file uploads)
+   * @param url - The endpoint URL
+   * @param formData - FormData object containing files and data
+   * @param config - Optional axios request configuration
+   * @returns Promise resolving to API response with typed data
+   */
   async postFormData<T>(
     url: string,
     formData: FormData,
@@ -96,6 +126,11 @@ class HttpService {
     }
   }
 
+  /**
+   * Handles and formats errors from API requests
+   * @param error - The error object from axios
+   * @returns Formatted error response
+   */
   private handleError<T>(error: unknown): ApiResponse<T> {
     const errorObj = error as {
       response?: { data?: { message?: string } };
