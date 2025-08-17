@@ -259,7 +259,7 @@ const DashboardPage: React.FC = () => {
 
           <Grid templateColumns={{ base: '1fr', lg: 'repeat(3, 1fr)' }} gap={6}>
             <WeeklyAnalysisCard
-              title="Análisis por Semana"
+              title="Análisis Semanal"
               weeklyData={data.dailyStats}
               formatDayName={formatDayName}
               loading={loading.dailyStats}
