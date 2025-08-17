@@ -1,1 +1,1 @@
-export * from './useScan';
+export { useScan } from './useScan';

@@ -1,5 +1,5 @@
-export * from './FileUpload';
-export * from './ImagePreview';
-export * from './ScanResult';
-export * from './LoadingState';
-export * from './ErrorState';
+export { FileUpload } from './FileUpload';
+export { ImagePreview } from './ImagePreview';
+export { ScanResult } from './ScanResult';
+export { LoadingState } from './LoadingState';
+export { ErrorState } from './ErrorState';

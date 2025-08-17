@@ -1,1 +1,1 @@
-export * from './scan.service';
+export { scanService } from './scan.service';

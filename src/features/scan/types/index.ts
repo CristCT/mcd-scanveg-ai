@@ -1,1 +1,1 @@
-export * from './scan';
+export type { ScanResultData, ScanRequest, ScanState } from './scan';

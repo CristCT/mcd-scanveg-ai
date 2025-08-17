@@ -1,2 +1,2 @@
-export * from './http.service';
-export * from './ping.service';
+export { httpService } from './http.service';
+export { pingService } from './ping.service';
