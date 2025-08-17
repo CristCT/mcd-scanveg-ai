@@ -246,17 +246,16 @@ class DashboardService {
           });
         }
 
-        const currentDate = new Date();
-        const todayDayOfWeek = currentDate.getDay();
-
         const orderedDays: Array<{ day: number; count: number; date: string }> =
           [];
 
-        for (let i = 0; i < 7; i++) {
-          const dayIndex = (todayDayOfWeek + i) % 7;
-          if (allDaysMap.has(dayIndex)) {
-            orderedDays.push(allDaysMap.get(dayIndex)!);
+        for (let i = 1; i <= 6; i++) {
+          if (allDaysMap.has(i)) {
+            orderedDays.push(allDaysMap.get(i)!);
           }
+        }
+        if (allDaysMap.has(0)) {
+          orderedDays.push(allDaysMap.get(0)!);
         }
 
         const transformedData: DailyStatsResponse = {

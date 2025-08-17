@@ -18,3 +18,9 @@ export type {
 } from '../../shared/types';
 
 export { dashboardService } from './services/dashboard.service';
+export {
+  startOfLocalDay,
+  addDays,
+  formatYMDLocal,
+  getMondayOfCurrentWeek,
+} from './utils';

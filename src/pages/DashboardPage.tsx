@@ -24,6 +24,9 @@ import {
   HealthStatusCard,
   RecentAnalysesCard,
   dashboardService,
+  addDays,
+  formatYMDLocal,
+  getMondayOfCurrentWeek,
 } from '../features/dashboard';
 import type { DashboardState } from '../features/dashboard';
 import type { WeeklyAnalysisItem } from '../shared/types';
@@ -51,26 +54,7 @@ const DashboardPage: React.FC = () => {
   const { currentPage, pageSize, pagination, setCurrentPage, setPagination } =
     usePagination({ initialPage: 1, initialPageSize: 10 });
 
-  const startOfLocalDay = (d: Date) => {
-    const x = new Date(d);
-    x.setHours(0, 0, 0, 0);
-    return x;
-  };
-
-  const addDays = (d: Date, days: number) => {
-    const x = new Date(d);
-    x.setDate(x.getDate() + days);
-    return x;
-  };
-
-  const formatYMDLocal = (d: Date) => {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${dd}`;
-  };
-
-  const baseDateRef = React.useRef<Date>(startOfLocalDay(new Date()));
+  const baseDateRef = React.useRef<Date>(getMondayOfCurrentWeek(new Date()));
 
   const [dailyStatsPage, setDailyStatsPage] = useState(0);
   const [dailyStatsData, setDailyStatsData] = useState<{
