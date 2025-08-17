@@ -8,6 +8,7 @@ import type {
   PaginationInfo,
   DiseaseDistribution,
 } from '../../../shared/types';
+import { formatYMDLocal } from '../utils/dateUtils';
 
 interface BackendAnalysisItem {
   id: number;
@@ -69,7 +70,7 @@ class DashboardService {
         let analysisCount = 0;
 
         if (recentAnalysesResponse.success && recentAnalysesResponse.data) {
-          const today = new Date().toISOString().split('T')[0];
+          const today = formatYMDLocal(new Date());
 
           recentAnalysesResponse.data.analyses.forEach(analysis => {
             const analysisDate = analysis.date.split('T')[0];
