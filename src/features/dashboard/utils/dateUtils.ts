@@ -1,5 +1,7 @@
 /**
  * Sets the time of a date to the start of the day (00:00:00.000)
+ * @param d - The date to modify
+ * @returns A new Date object with time set to start of day
  */
 export const startOfLocalDay = (d: Date): Date => {
   const x = new Date(d);
@@ -9,6 +11,9 @@ export const startOfLocalDay = (d: Date): Date => {
 
 /**
  * Adds a specified number of days to a date
+ * @param d - The base date
+ * @param days - Number of days to add (can be negative to subtract)
+ * @returns A new Date object with the specified days added
  */
 export const addDays = (d: Date, days: number): Date => {
   const x = new Date(d);
@@ -18,6 +23,8 @@ export const addDays = (d: Date, days: number): Date => {
 
 /**
  * Formats a date to YYYY-MM-DD format in local time
+ * @param d - The date to format
+ * @returns Date string in YYYY-MM-DD format
  */
 export const formatYMDLocal = (d: Date): string => {
   const y = d.getFullYear();
@@ -28,6 +35,8 @@ export const formatYMDLocal = (d: Date): string => {
 
 /**
  * Gets the Monday of the current week for a given date
+ * @param date - The reference date
+ * @returns A new Date object representing the Monday of the week containing the given date
  */
 export const getMondayOfCurrentWeek = (date: Date): Date => {
   const d = startOfLocalDay(date);

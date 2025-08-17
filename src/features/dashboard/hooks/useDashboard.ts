@@ -24,9 +24,17 @@ const initialState: DashboardState = {
   },
 };
 
+/**
+ * Custom hook for managing dashboard state and data loading
+ * Handles statistics, recent analyses, and daily stats with loading and error states
+ * @returns Object containing state and functions for dashboard data management
+ */
 export const useDashboard = () => {
   const [state, setState] = useState<DashboardState>(initialState);
 
+  /**
+   * Loads general dashboard statistics from the API
+   */
   const loadStatistics = useCallback(async () => {
     setState(prev => ({
       ...prev,
@@ -47,12 +55,18 @@ export const useDashboard = () => {
         loading: { ...prev.loading, statistics: false },
         error: {
           ...prev.error,
-          statistics: statsResponse.error || 'Error al cargar estadísticas',
+          statistics: statsResponse.error || 'Failed to load statistics',
         },
       }));
     }
   }, []);
 
+  /**
+   * Loads recent analyses with pagination
+   * @param currentPage - Current page number
+   * @param pageSize - Number of items per page
+   * @param setPagination - Function to update pagination state
+   */
   const loadRecentAnalyses = useCallback(
     async (
       currentPage: number,
@@ -88,7 +102,7 @@ export const useDashboard = () => {
           error: {
             ...prev.error,
             recentAnalyses:
-              analysesResponse.error || 'Error al cargar análisis',
+              analysesResponse.error || 'Failed to load recent analyses',
           },
         }));
       }
@@ -96,6 +110,10 @@ export const useDashboard = () => {
     []
   );
 
+  /**
+   * Updates the daily stats in the dashboard state
+   * @param dailyStats - Array of weekly analysis items
+   */
   const setDailyStats = useCallback((dailyStats: WeeklyAnalysisItem[]) => {
     setState(prev => ({
       ...prev,
@@ -103,6 +121,10 @@ export const useDashboard = () => {
     }));
   }, []);
 
+  /**
+   * Updates the loading state for daily stats
+   * @param loading - Loading state boolean
+   */
   const setDailyStatsLoading = useCallback((loading: boolean) => {
     setState(prev => ({
       ...prev,
@@ -110,6 +132,10 @@ export const useDashboard = () => {
     }));
   }, []);
 
+  /**
+   * Updates the error state for daily stats
+   * @param error - Error message or null
+   */
   const setDailyStatsError = useCallback((error: string | null) => {
     setState(prev => ({
       ...prev,
