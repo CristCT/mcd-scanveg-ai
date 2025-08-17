@@ -24,3 +24,4 @@ export {
   formatYMDLocal,
   getMondayOfCurrentWeek,
 } from './utils';
+export { useDashboard, useWeeklyStats } from './hooks';

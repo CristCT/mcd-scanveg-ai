@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Stat, Spinner } from '@chakra-ui/react';
+import { Card, Stat, Spinner, Box, HStack } from '@chakra-ui/react';
 
 interface StatisticsCardProps {
   label: string;
@@ -20,14 +20,18 @@ export const StatisticsCard: React.FC<StatisticsCardProps> = ({
     <Card.Root>
       <Card.Body p={6}>
         <Stat.Root>
-          <Stat.Label>{label}</Stat.Label>
-          <Stat.ValueText>
+          <HStack justify="space-between" align="start" mb={2}>
+            <Stat.Label>{label}</Stat.Label>
+            {icon && (
+              <Box color="teal.400" fontSize="xl">
+                {icon}
+              </Box>
+            )}
+          </HStack>
+          <Stat.ValueText fontSize="2xl" fontWeight="bold">
             {loading ? <Spinner size="sm" /> : value}
           </Stat.ValueText>
-          <Stat.HelpText>
-            {icon && <Stat.UpIndicator />}
-            {helpText}
-          </Stat.HelpText>
+          <Stat.HelpText>{helpText}</Stat.HelpText>
         </Stat.Root>
       </Card.Body>
     </Card.Root>
