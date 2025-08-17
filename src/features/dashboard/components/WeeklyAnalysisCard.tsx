@@ -64,13 +64,13 @@ export const WeeklyAnalysisCard: React.FC<WeeklyAnalysisCardProps> = ({
             <Spinner size="lg" />
             <Text>Cargando análisis semanales...</Text>
           </VStack>
-        ) : data.length === 0 ? (
+        ) : data.length === 0 && !error ? (
           <VStack justify="center" align="center" h="200px">
             <Text color="gray.500">
-              No hay datos de análisis semanales disponibles
+              No hay datos de análisis semanales disponibles para este período
             </Text>
           </VStack>
-        ) : (
+        ) : data.length > 0 ? (
           <VStack gap={4}>
             <BarList.Root chart={chart} w="full">
               <BarList.Content columnGap={4}>
@@ -106,6 +106,12 @@ export const WeeklyAnalysisCard: React.FC<WeeklyAnalysisCardProps> = ({
                 </HStack>
               </HStack>
             )}
+          </VStack>
+        ) : (
+          <VStack justify="center" align="center" h="200px">
+            <Text color="gray.500">
+              No hay datos de análisis semanales disponibles para este período
+            </Text>
           </VStack>
         )}
       </Card.Body>

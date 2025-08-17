@@ -63,8 +63,23 @@ export const useWeeklyStats = () => {
           end_date: weekResponse.data?.end_date || weekEnd,
         });
       } else {
-        setLoading(false);
-        setError(weekResponse.error || 'Failed to load weekly statistics');
+        if (
+          weekResponse.data &&
+          Array.isArray(weekResponse.data.dailyAnalysis)
+        ) {
+          const weeklyData = weekResponse.data.dailyAnalysis;
+          setDailyStats(weeklyData);
+          setLoading(false);
+
+          setData({
+            analyses: weeklyData,
+            start_date: weekResponse.data.start_date || weekStart,
+            end_date: weekResponse.data.end_date || weekEnd,
+          });
+        } else {
+          setLoading(false);
+          setError(weekResponse.error || 'Failed to load weekly statistics');
+        }
       }
     },
     [currentPage]

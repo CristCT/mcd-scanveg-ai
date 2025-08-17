@@ -218,6 +218,8 @@ class DashboardService {
       );
 
       if (response.success && response.data) {
+        const dailyAnalysisData = response.data.data.dailyAnalysis || [];
+
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const allDaysMap = new Map<
@@ -235,7 +237,7 @@ class DashboardService {
           const day = String(date.getDate()).padStart(2, '0');
           const dateString = `${year}-${month}-${day}`;
 
-          const dayData = response.data.data.dailyAnalysis.find(
+          const dayData = dailyAnalysisData.find(
             item => item.date === dateString
           );
 
@@ -269,10 +271,71 @@ class DashboardService {
           data: transformedData,
         };
       } else {
-        return {
-          success: false,
-          error: response.data?.message || 'Failed to fetch daily statistics',
-        };
+        if (
+          response.data?.data &&
+          Array.isArray(response.data.data.dailyAnalysis)
+        ) {
+          const dailyAnalysisData = response.data.data.dailyAnalysis;
+
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const allDaysMap = new Map<
+            number,
+            { day: number; count: number; date: string }
+          >();
+
+          for (let i = 6; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const dayOfWeek = date.getDay();
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${day}`;
+
+            const dayData = dailyAnalysisData.find(
+              item => item.date === dateString
+            );
+
+            allDaysMap.set(dayOfWeek, {
+              day: dayOfWeek,
+              count: dayData ? dayData.total : 0,
+              date: dateString,
+            });
+          }
+
+          const orderedDays: Array<{
+            day: number;
+            count: number;
+            date: string;
+          }> = [];
+
+          for (let i = 1; i <= 6; i++) {
+            if (allDaysMap.has(i)) {
+              orderedDays.push(allDaysMap.get(i)!);
+            }
+          }
+          if (allDaysMap.has(0)) {
+            orderedDays.push(allDaysMap.get(0)!);
+          }
+
+          const transformedData: DailyStatsResponse = {
+            dailyAnalysis: orderedDays,
+            start_date: response.data.data.start_date,
+            end_date: response.data.data.end_date,
+          };
+
+          return {
+            success: true,
+            data: transformedData,
+          };
+        } else {
+          return {
+            success: false,
+            error: response.data?.message || 'Failed to fetch daily statistics',
+          };
+        }
       }
     } catch {
       return {

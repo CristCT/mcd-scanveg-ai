@@ -69,11 +69,11 @@ const DashboardPage: React.FC = () => {
         <VStack gap={8} align="stretch" w="full">
           <Box textAlign="center">
             <Heading size="xl" mb={2}>
-              Dashboard de Análisis de Tomates
+              Dashboard de Análisis
             </Heading>
             <Text color="gray.600">
-              Resumen de análisis de enfermedades en tomates y estadísticas en
-              tiempo real
+              Resumen de análisis y estadísticas de enfermedades en hojas de
+              tomates
             </Text>
           </Box>
 

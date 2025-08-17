@@ -1,20 +1,20 @@
-# Ignorar archivos de build y dependencias
+# Ignore build and dependency files
 node_modules/
 dist/
 build/
 
-# Ignorar archivos de configuración
+# Ignore configuration files
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Ignorar archivos generados
+# Ignore generated files
 *.log
 coverage/
 
-# Ignorar configuraciones específicas
+# Ignore specific configurations
 public/
 *.config.js
 *.config.ts
