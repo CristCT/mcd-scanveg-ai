@@ -6,8 +6,9 @@ import {
   HStack,
   Text,
   Spinner,
-  Button,
+  IconButton,
 } from '@chakra-ui/react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ErrorAlert } from '../../../shared/components';
 import type { WeeklyAnalysisItem } from '../../../shared/types';
 import { BarList, type BarListData, useChart } from '@chakra-ui/charts';
@@ -81,25 +82,28 @@ export const WeeklyAnalysisCard: React.FC<WeeklyAnalysisCardProps> = ({
 
             {onPageChange && (
               <HStack justify="space-between" align="center" w="full">
-                <Button
-                  p={2}
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onPageChange('prev')}
-                >
-                  ← Anterior
-                </Button>
+                <HStack>
+                  <IconButton
+                    size="lg"
+                    variant={{ base: 'ghost', _selected: 'outline' }}
+                    onClick={() => onPageChange('prev')}
+                  >
+                    <ChevronLeft />
+                  </IconButton>
+                </HStack>
                 <Text fontSize="sm" color="gray.600">
                   {startDate && endDate ? `${startDate} - ${endDate}` : ''}
                 </Text>
-                <Button
-                  p={2}
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onPageChange('next')}
-                >
-                  Siguiente →
-                </Button>
+
+                <HStack>
+                  <IconButton
+                    size="lg"
+                    variant={{ base: 'ghost', _selected: 'outline' }}
+                    onClick={() => onPageChange('next')}
+                  >
+                    <ChevronRight />
+                  </IconButton>
+                </HStack>
               </HStack>
             )}
           </VStack>
