@@ -32,9 +32,6 @@ class HttpService {
   private setupInterceptors(): void {
     this.api.interceptors.request.use(
       config => {
-        console.log(
-          `Making ${config.method?.toUpperCase()} request to ${config.url}`
-        );
         return config;
       },
       error => {
