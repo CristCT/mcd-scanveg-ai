@@ -44,3 +44,39 @@ export const getMondayOfCurrentWeek = (date: Date): Date => {
   const diff = d.getDate() - day + (day === 0 ? -6 : 1);
   return new Date(d.setDate(diff));
 };
+
+/**
+ * Formats a date string from YYYY-MM-DD to DD/MM/YYYY format
+ * @param dateStr - Date string in YYYY-MM-DD format
+ * @returns Formatted date string in DD/MM/YYYY format or empty string if invalid
+ */
+export const formatDateToDDMMYYYY = (dateStr: string): string => {
+  if (!dateStr || typeof dateStr !== 'string') {
+    return '';
+  }
+
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    const [day, month, year] = parts;
+    return `${day}/${month}/${year}`;
+  }
+
+  return '';
+};
+
+/**
+ * Formats a date range from start and end date strings
+ * @param startDate - Start date string in YYYY-MM-DD format
+ * @param endDate - End date string in YYYY-MM-DD format
+ * @returns Formatted date range string or empty string if invalid
+ */
+export const formatDateRange = (startDate: string, endDate: string): string => {
+  const formattedStart = formatDateToDDMMYYYY(startDate);
+  const formattedEnd = formatDateToDDMMYYYY(endDate);
+
+  if (!formattedStart || !formattedEnd) {
+    return '';
+  }
+
+  return `${formattedStart} - ${formattedEnd}`;
+};

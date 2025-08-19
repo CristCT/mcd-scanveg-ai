@@ -4,4 +4,4 @@ export {
   translateStatus,
   getConfianzaColor,
   formatAnalysisDate,
-} from './dashboard';
+} from './formatters';

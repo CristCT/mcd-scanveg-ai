@@ -12,6 +12,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ErrorAlert } from '../../../shared/components';
 import type { WeeklyAnalysisItem } from '../../../shared/types';
 import { BarList, type BarListData, useChart } from '@chakra-ui/charts';
+import { formatDateRange } from '../utils/dateUtils';
 
 interface WeeklyAnalysisCardProps {
   title: string;
@@ -92,7 +93,7 @@ export const WeeklyAnalysisCard: React.FC<WeeklyAnalysisCardProps> = ({
                   </IconButton>
                 </HStack>
                 <Text fontSize="sm" color="gray.600">
-                  {startDate && endDate ? `${startDate} - ${endDate}` : ''}
+                  {formatDateRange(startDate, endDate)}
                 </Text>
 
                 <HStack>

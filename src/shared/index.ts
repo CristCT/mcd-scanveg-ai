@@ -35,4 +35,4 @@ export {
   translateStatus,
   getConfianzaColor,
   formatAnalysisDate,
-} from './utils';
+} from './utils/formatters';

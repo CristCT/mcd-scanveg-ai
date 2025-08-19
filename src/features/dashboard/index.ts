@@ -23,5 +23,7 @@ export {
   addDays,
   formatYMDLocal,
   getMondayOfCurrentWeek,
+  formatDateToDDMMYYYY,
+  formatDateRange,
 } from './utils';
 export { useDashboard, useWeeklyStats } from './hooks';
