@@ -59,7 +59,7 @@ export const translateStatus = (status: string): string => {
  */
 export const getConfianzaColor = (confianza: number): string => {
   if (confianza >= 90) return 'green';
-  if (confianza >= 80) return 'yellow';
+  if (confianza >= 60) return 'yellow';
   return 'red';
 };
 

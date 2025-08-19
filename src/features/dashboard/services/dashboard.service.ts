@@ -73,7 +73,14 @@ class DashboardService {
           const today = formatYMDLocal(new Date());
 
           recentAnalysesResponse.data.analyses.forEach(analysis => {
-            const analysisDate = analysis.date.split('T')[0];
+            let analysisDate: string;
+            try {
+              const date = new Date(analysis.date);
+              analysisDate = formatYMDLocal(date);
+            } catch {
+              analysisDate = analysis.date.split('T')[0];
+            }
+
             if (analysisDate === today) {
               todayCount++;
             }
@@ -220,16 +227,15 @@ class DashboardService {
       if (response.success && response.data) {
         const dailyAnalysisData = response.data.data.dailyAnalysis || [];
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const startDate = new Date(weekStart);
         const allDaysMap = new Map<
           number,
           { day: number; count: number; date: string }
         >();
 
-        for (let i = 6; i >= 0; i--) {
-          const date = new Date(today);
-          date.setDate(today.getDate() - i);
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(startDate);
+          date.setDate(startDate.getDate() + i);
           const dayOfWeek = date.getDay();
 
           const year = date.getFullYear();
@@ -277,16 +283,15 @@ class DashboardService {
         ) {
           const dailyAnalysisData = response.data.data.dailyAnalysis;
 
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
+          const startDate = new Date(weekStart);
           const allDaysMap = new Map<
             number,
             { day: number; count: number; date: string }
           >();
 
-          for (let i = 6; i >= 0; i--) {
-            const date = new Date(today);
-            date.setDate(today.getDate() - i);
+          for (let i = 0; i < 7; i++) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
             const dayOfWeek = date.getDay();
 
             const year = date.getFullYear();
