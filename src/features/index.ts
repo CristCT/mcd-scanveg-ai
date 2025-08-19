@@ -24,6 +24,7 @@ export {
   addDays,
   formatYMDLocal,
   getMondayOfCurrentWeek,
+  formatDisplayDate,
 } from './dashboard';
 
 export type {

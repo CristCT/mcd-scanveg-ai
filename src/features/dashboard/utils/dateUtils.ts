@@ -46,37 +46,39 @@ export const getMondayOfCurrentWeek = (date: Date): Date => {
 };
 
 /**
- * Formats a date string from YYYY-MM-DD to DD/MM/YYYY format
- * @param dateStr - Date string in YYYY-MM-DD format
- * @returns Formatted date string in DD/MM/YYYY format or empty string if invalid
+ * Formats a date string to DD/MM/YYYY format for display
+ * Handles both YYYY-MM-DD and DD-MM-YYYY input formats
+ * @param dateString - The date string to format
+ * @returns Date string in DD/MM/YYYY format
  */
-export const formatDateToDDMMYYYY = (dateStr: string): string => {
-  if (!dateStr || typeof dateStr !== 'string') {
-    return '';
+export const formatDisplayDate = (dateString: string): string => {
+  if (!dateString) return '';
+
+  if (dateString.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+    return dateString;
   }
 
-  const parts = dateStr.split('-');
-  if (parts.length === 3) {
-    const [day, month, year] = parts;
+  if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) {
+    const [day, month, year] = dateString.split('-');
     return `${day}/${month}/${year}`;
   }
 
-  return '';
-};
-
-/**
- * Formats a date range from start and end date strings
- * @param startDate - Start date string in YYYY-MM-DD format
- * @param endDate - End date string in YYYY-MM-DD format
- * @returns Formatted date range string or empty string if invalid
- */
-export const formatDateRange = (startDate: string, endDate: string): string => {
-  const formattedStart = formatDateToDDMMYYYY(startDate);
-  const formattedEnd = formatDateToDDMMYYYY(endDate);
-
-  if (!formattedStart || !formattedEnd) {
-    return '';
+  if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
   }
 
-  return `${formattedStart} - ${formattedEnd}`;
+  try {
+    const date = new Date(dateString);
+    if (!isNaN(date.getTime())) {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+  } catch {
+    return dateString;
+  }
+
+  return dateString;
 };

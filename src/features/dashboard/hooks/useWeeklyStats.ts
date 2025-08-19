@@ -59,8 +59,8 @@ export const useWeeklyStats = () => {
 
         setData({
           analyses: weeklyData,
-          start_date: weekResponse.data?.start_date || weekStart,
-          end_date: weekResponse.data?.end_date || weekEnd,
+          start_date: weekStart,
+          end_date: weekEnd,
         });
       } else {
         if (
@@ -73,8 +73,8 @@ export const useWeeklyStats = () => {
 
           setData({
             analyses: weeklyData,
-            start_date: weekResponse.data.start_date || weekStart,
-            end_date: weekResponse.data.end_date || weekEnd,
+            start_date: weekStart,
+            end_date: weekEnd,
           });
         } else {
           setLoading(false);

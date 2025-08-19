@@ -3,6 +3,5 @@ export {
   addDays,
   formatYMDLocal,
   getMondayOfCurrentWeek,
-  formatDateToDDMMYYYY,
-  formatDateRange,
+  formatDisplayDate,
 } from './dateUtils';
