@@ -70,13 +70,14 @@ export const getConfianzaColor = (confianza: number): string => {
  */
 export const formatAnalysisDate = (dateString: string): string => {
   try {
-    const date = new Date(dateString);
-
-    if (isNaN(date.getTime())) {
-      return 'Fecha incorrecta';
+    if (!dateString) return 'Fecha incorrecta';
+    if (dateString.includes('T')) {
+      return dateString.split('T')[0];
     }
-
-    return date.toLocaleDateString('es-ES');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString;
+    }
+    return 'Fecha incorrecta';
   } catch {
     return 'Fecha incorrecta';
   }
