@@ -71,13 +71,16 @@ export const getConfianzaColor = (confianza: number): string => {
 export const formatAnalysisDate = (dateString: string): string => {
   try {
     if (!dateString) return 'Fecha incorrecta';
+    let ymd = '';
     if (dateString.includes('T')) {
-      return dateString.split('T')[0];
+      ymd = dateString.split('T')[0];
+    } else if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      ymd = dateString;
+    } else {
+      return 'Fecha incorrecta';
     }
-    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-      return dateString;
-    }
-    return 'Fecha incorrecta';
+    const [year, month, day] = ymd.split('-');
+    return `${day}/${month}/${year}`;
   } catch {
     return 'Fecha incorrecta';
   }
