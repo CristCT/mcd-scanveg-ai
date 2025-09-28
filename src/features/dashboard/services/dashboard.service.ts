@@ -2,66 +2,50 @@ import { httpService } from '../../../shared/services/http.service';
 import type { ApiResponse } from '../../../shared/types';
 import type {
   Statistics,
-  RecentAnalysesResponse,
   DailyStatsResponse,
   AnalysisResult,
   PaginationInfo,
   DiseaseDistribution,
 } from '../../../shared/types';
 import { formatYMDLocal } from '../utils/dateUtils';
-
-interface BackendAnalysisItem {
-  id: number;
-  filename?: string;
-  prediction?: string;
-  confidence: number;
-  status: 'healthy' | 'diseased';
-  processing_time?: number;
-  model_version?: string;
-  created_at: string;
-  updated_at: string;
-  all_predictions?: Record<string, number>;
-  error_message?: string;
-  success?: boolean;
-  image_info?: {
-    mode?: string;
-    size?: string;
-    format?: string;
-    filename?: string;
-  };
-}
+import { DISEASE_COLORS, WEEK_DAYS } from '../../../shared/constants';
+import type {
+  BackendAnalysisItem,
+  BackendStatisticsResponse,
+  BackendRecentAnalysesResponse,
+  BackendDiseasesDistributionResponse,
+  BackendWeekStatsResponse,
+  BackendAnalysisResponse,
+  DiseaseColorMap,
+  DailyAnalysisData,
+  DayInfo,
+  DateParts,
+  CalculatedStats,
+} from '../interfaces';
 
 class DashboardService {
   private getDiseaseColor(disease: string): string {
-    const colorMap: Record<string, string> = {
-      Tomato_healthy: 'green.500',
-      Tomato_Late_blight: 'red.500',
-      Tomato_Early_blight: 'orange.500',
-      Tomato__Tomato_mosaic_virus: 'purple.500',
-      Tomato_Bacterial_spot: 'yellow.600',
-      Tomato_Leaf_Mold: 'blue.500',
-      Tomato_Septoria_leaf_spot: 'pink.500',
-      Tomato_Spider_mites_Two_spotted_spider_mite: 'teal.500',
-      Tomato__Target_Spot: 'cyan.500',
-      Tomato__Tomato_YellowLeaf__Curl_Virus: 'lime.500',
+    const colorMap: DiseaseColorMap = {
+      Tomato_healthy: DISEASE_COLORS.HEALTHY,
+      Tomato_Late_blight: DISEASE_COLORS.LATE_BLIGHT,
+      Tomato_Early_blight: DISEASE_COLORS.EARLY_BLIGHT,
+      Tomato__Tomato_mosaic_virus: DISEASE_COLORS.MOSAIC_VIRUS,
+      Tomato_Bacterial_spot: DISEASE_COLORS.BACTERIAL_SPOT,
+      Tomato_Leaf_Mold: DISEASE_COLORS.LEAF_MOLD,
+      Tomato_Septoria_leaf_spot: DISEASE_COLORS.SEPTORIA_LEAF_SPOT,
+      Tomato_Spider_mites_Two_spotted_spider_mite: DISEASE_COLORS.SPIDER_MITES,
+      Tomato__Target_Spot: DISEASE_COLORS.TARGET_SPOT,
+      Tomato__Tomato_YellowLeaf__Curl_Virus: DISEASE_COLORS.YELLOW_LEAF_CURL,
     };
-    return colorMap[disease] || 'gray.500';
+    return colorMap[disease] || DISEASE_COLORS.DEFAULT;
   }
   /**
    * Gets the general dashboard statistics
    */
   async getStatistics(): Promise<ApiResponse<Statistics>> {
     try {
-      const response = await httpService.get<{
-        success: boolean;
-        data: {
-          total_analyses: number;
-          healthy_plants: number;
-          diseased_plants: number;
-          most_common_disease: string;
-        };
-        message: string;
-      }>('/api/statistics');
+      const response =
+        await httpService.get<BackendStatisticsResponse>('/api/statistics');
 
       if (response.success && response.data) {
         const recentAnalysesResponse = await this.getRecentAnalyses(1, 100);
@@ -71,6 +55,11 @@ class DashboardService {
 
         if (recentAnalysesResponse.success && recentAnalysesResponse.data) {
           const today = formatYMDLocal(new Date());
+          const stats: CalculatedStats = {
+            todayCount: 0,
+            totalConfidence: 0,
+            analysisCount: 0,
+          };
 
           recentAnalysesResponse.data.analyses.forEach(analysis => {
             let analysisDate: string;
@@ -82,19 +71,22 @@ class DashboardService {
             }
 
             if (analysisDate === today) {
-              todayCount++;
+              stats.todayCount++;
             }
 
-            totalConfidence += analysis.confidence;
-            analysisCount++;
+            stats.totalConfidence += analysis.confidence;
+            stats.analysisCount++;
           });
+
+          todayCount = stats.todayCount;
+          totalConfidence = stats.totalConfidence;
+          analysisCount = stats.analysisCount;
         }
 
-        const diseasesResponse = await httpService.get<{
-          success: boolean;
-          data: { diseases: Array<{ name: string; count: number }> };
-          message: string;
-        }>('/api/diseases/distribution');
+        const diseasesResponse =
+          await httpService.get<BackendDiseasesDistributionResponse>(
+            '/api/diseases/distribution'
+          );
 
         let diseases: DiseaseDistribution[] = [];
         if (diseasesResponse.success && diseasesResponse.data) {
@@ -141,6 +133,9 @@ class DashboardService {
 
   /**
    * Gets recent analyses with pagination
+   * @param page - Page number (default: 1)
+   * @param pageSize - Number of items per page (default: 10)
+   * @returns Promise with analyses and pagination information
    */
   async getRecentAnalyses(
     page: number = 1,
@@ -149,11 +144,9 @@ class DashboardService {
     ApiResponse<{ analyses: AnalysisResult[]; pagination: PaginationInfo }>
   > {
     try {
-      const response = await httpService.get<{
-        success: boolean;
-        data: RecentAnalysesResponse;
-        message: string;
-      }>(`/api/analyses/recent?page=${page}&page_size=${pageSize}`);
+      const response = await httpService.get<BackendRecentAnalysesResponse>(
+        `/api/analyses/recent?page=${page}&page_size=${pageSize}`
+      );
 
       if (response.success && response.data) {
         const transformedAnalyses = response.data.data.analyses.map(
@@ -200,43 +193,36 @@ class DashboardService {
   }
 
   /**
-   * Gets the week statistics
+   * Gets the week statistics for a specified date range
+   * @param weekStart - Start date in YYYY-MM-DD format
+   * @param weekEnd - End date in YYYY-MM-DD format
+   * @returns Promise with daily statistics response
    */
   async getWeekStats(
     weekStart: string,
     weekEnd: string
   ): Promise<ApiResponse<DailyStatsResponse>> {
     try {
-      const response = await httpService.get<{
-        success: boolean;
-        data: {
-          dailyAnalysis: Array<{
-            date: string;
-            total: number;
-            healthy: number;
-            diseased: number;
-          }>;
-          start_date: string;
-          end_date: string;
-        };
-        message: string;
-      }>(
+      const response = await httpService.get<BackendWeekStatsResponse>(
         `/api/analyses/week-stats?week_start=${weekStart}&week_end=${weekEnd}`
       );
 
       if (response.success && response.data?.data) {
-        const dailyAnalysisData = response.data.data.dailyAnalysis || [];
+        const dailyAnalysisData: DailyAnalysisData[] =
+          response.data.data.dailyAnalysis || [];
 
         const startDateParts = weekStart.split('-');
+        const dateParts: DateParts = {
+          year: parseInt(startDateParts[0]),
+          month: parseInt(startDateParts[1]) - 1,
+          day: parseInt(startDateParts[2]),
+        };
         const startDate = new Date(
-          parseInt(startDateParts[0]),
-          parseInt(startDateParts[1]) - 1,
-          parseInt(startDateParts[2])
+          dateParts.year,
+          dateParts.month,
+          dateParts.day
         );
-        const allDaysMap = new Map<
-          number,
-          { day: number; count: number; date: string }
-        >();
+        const allDaysMap = new Map<number, DayInfo>();
 
         for (let i = 0; i < 7; i++) {
           const date = new Date(startDate);
@@ -252,7 +238,7 @@ class DashboardService {
             item => item.date === dateString
           );
 
-          const dayInfo = {
+          const dayInfo: DayInfo = {
             day: dayOfWeek,
             count: dayData ? dayData.total : 0,
             date: dateString,
@@ -261,16 +247,15 @@ class DashboardService {
           allDaysMap.set(dayOfWeek, dayInfo);
         }
 
-        const orderedDays: Array<{ day: number; count: number; date: string }> =
-          [];
+        const orderedDays: DayInfo[] = [];
 
-        for (let i = 1; i <= 6; i++) {
+        for (let i = WEEK_DAYS.MONDAY; i <= WEEK_DAYS.SATURDAY; i++) {
           if (allDaysMap.has(i)) {
             orderedDays.push(allDaysMap.get(i)!);
           }
         }
-        if (allDaysMap.has(0)) {
-          orderedDays.push(allDaysMap.get(0)!);
+        if (allDaysMap.has(WEEK_DAYS.SUNDAY)) {
+          orderedDays.push(allDaysMap.get(WEEK_DAYS.SUNDAY)!);
         }
 
         const transformedData: DailyStatsResponse = {
@@ -298,17 +283,17 @@ class DashboardService {
   }
 
   /**
-   * Gets a specific analysis by ID
+   * Gets a specific analysis by its unique identifier
+   * @param analysisId - The unique ID of the analysis to retrieve
+   * @returns Promise with the analysis result
    */
   async getAnalysisById(
     analysisId: number
   ): Promise<ApiResponse<AnalysisResult>> {
     try {
-      const response = await httpService.get<{
-        success: boolean;
-        data: AnalysisResult;
-        message: string;
-      }>(`/api/analyses/${analysisId}`);
+      const response = await httpService.get<BackendAnalysisResponse>(
+        `/api/analyses/${analysisId}`
+      );
 
       if (response.success && response.data) {
         return {
